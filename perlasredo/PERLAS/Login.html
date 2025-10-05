@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PERLAS LOGIN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Page/CSS/LoginSheet.css">
+    <link rel="stylesheet" href="Page/CSS/styles.css">
+    <script defer src="Page/JS/firebase-init.js"></script>
+    <script defer src="Page/JS/Login.js"></script>
+</head>
+<body>
+    <header class="top">
+        <a href="index.html" class="logo">PERLAS</a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="Signup.html">SignIn</a>
+        </nav>
+    </header>
+    <div class="notification-container" id="notificationContainer"></div>
+    <div class="body">
+        <!-- <div class="Header">
+            <p class="top">PERLAS:</p>
+            <p class="bottom">ANGLERS JOURNEY</p>
+        </div> -->
+    <div class="login-container Fade">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-container">
+                    <input type="text" id="username" name="username" required>
+                    <span class="input-icon">👤</span>
+                </div>
+                <div class="error-message" id="usernameError"></div>
+                <br>
+                <br>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="showPassword"> <label for="showPassword">Show Password</label>
+                </div>
+                <br>
+                <br>
+            </div>
+            <button type="submit" class="button" id="loginButton">
+                <span class="button-text">LogIn</span>
+                <span class="loading-spinner" style="display: none;">⟳</span>
+            </button>
+        </form>
+        <div class="Sign">
+            <br>
+            <a href="Signup.html" class="Link">Create an Account.</a>
+        </div>
+    </div>
+    </div>
+    <p style="text-align: center; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); font-size: 14px; margin-top: 20px;">PERLAS 2024</p>
+</body>
+</html>

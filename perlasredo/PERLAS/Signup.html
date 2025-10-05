@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Signup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Use the same stylesheet as the login page to match design -->
+    <link rel="stylesheet" href="Page/CSS/LoginSheet.css">
+    <link rel="stylesheet" href="Page/CSS/styles.css">
+    <script defer src="Page/JS/firebase-init.js"></script>
+    <script defer src="Page/JS/Signup.js"></script>
+</head>
+<body>
+    <header class="top">
+        <a href="index.html" class="logo">PERLAS</a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="Login.html">LogIn</a>
+        </nav>
+    </header>
+    <div class="body">
+        <div class="notification-container" id="notificationContainer"></div>
+        <div class="login-container Fade">
+            <h2>Signup</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-container">
+                        <input type="text" id="username" name="username" required>
+                        <span class="input-icon">👤</span>
+                    </div>
+                    <div class="error-message" id="usernameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-container">
+                        <input type="password" id="password" name="password" required>
+                        <span class="input-icon">🔒</span>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="showPassword"> <label for="showPassword">Show Password</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="showConfirmPassword"> <label for="showConfirmPassword">Show Password</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="button" id="signupButton">
+                    <span class="button-text">SIGN-UP</span>
+                    <span class="loading-spinner" style="display: none;">⟳</span>
+                </button>
+            </form>
+
+            <div class="Sign">
+                <br>
+                <a href="Login.html" class="Link">Already have an account? Log in.</a>
+            </div>
+        </div>
+    </div>
+    <p style="text-align: center; color: rgb(15, 15, 15);">SOULE 2024</p>
+</body>
+</html>
