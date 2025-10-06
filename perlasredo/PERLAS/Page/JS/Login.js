@@ -184,7 +184,7 @@ class LoginManager {
             if (result.success) {
                 this.showNotification('Login successful! Redirecting...', 'success');
                 await this.delay(1000);
-                window.location.href = 'index.html';
+                window.location.href = 'Home.html';
             } else {
                 this.showNotification(result.message, 'error');
                 this.shakeForm();
