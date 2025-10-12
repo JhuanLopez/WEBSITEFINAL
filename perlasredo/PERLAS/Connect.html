@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="Page/Icons/all.min.css">
         <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
         <script defer src="Page/JS/Animation.js"></script>
+        <script defer src="Page/JS/Connect.js"></script>
     </head>
    <body>
     <header class="top">
@@ -24,26 +25,29 @@
     </div>
     <div class="container">
         <div class="disc">
-    <p>Send Us a Message and share your <br>thoughts about this website</p>
-        </div>    
-    <div class="Holder">
-                <div class="Contact">
-            <form>
-                <br>
-                <label for="name" class="label">Name:</label>
-                <input type="text" name="name">
-                <br>
-                <label for="mail" class="label">E-mail:</label>
-                <input type="text" name="mail" >    
-                </div>
+            <p>Send us a message and share your<br>thoughts about this website</p>
+        </div>
+
+        <form id="contactForm" class="Holder" novalidate>
             <div class="Contact">
-                <label for="comment">Message:</label>
-                <input type="text" name="comment" size="70" aria-rowcount="50" aria-colcount="50" class="Comsec"><br><br>
-                <input  type="submit" value="Send" class="Buttons" onclick="alert('Message sent')">
-                <input type="reset" value="Reset" class="Buttons">
+                <label for="name" class="label">Name</label>
+                <input id="name" name="name" type="text" required placeholder="Your full name">
+
+                <label for="email" class="label">E-mail</label>
+                <input id="email" name="email" type="email" required placeholder="name@example.com">
+            </div>
+
+            <div class="Contact">
+                <label for="message" class="label">Message</label>
+                <textarea id="message" name="message" class="Comsec" rows="8" required placeholder="Write your message here..."></textarea>
+
+                <div class="form-actions">
+                    <button type="submit" class="Buttons">Send</button>
+                    <button type="reset" class="Buttons">Reset</button>
                 </div>
-         </form>
-        </div> 
+                <div id="formStatus" aria-live="polite" class="form-status" hidden></div>
+            </div>
+        </form>
     </div>
     <div class="TF">
 <footer class="footer">
