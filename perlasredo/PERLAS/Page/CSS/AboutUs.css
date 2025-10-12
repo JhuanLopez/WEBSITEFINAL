@@ -77,118 +77,161 @@
     }
 .Hold{
         display: flex;
-        gap: 300px;
-        background: linear-gradient(45deg, #979797, #222122);
-        padding: 3vh 5vw 3vh 5vw;
-        border-radius: 4rem;
+                width: 100%;
+                background: linear-gradient(45deg, #979797, #222122);
+                padding: 4vh 4vw;
+                border-radius: 2rem;
+                justify-content: center;
+                align-items: center;
       }
-      .container {
-        width: 612px;
-        height: 612px;
-        perspective: 800px;
-      }
-      
-    .container:hover > .card {
-        cursor: pointer;
-        transform: rotateY(180deg) scale(1.2);
-      }
-    .card {
-        height: 100%;
-        width: 100%;
-        position: relative;
-        transition: transform 1500ms;
-        transform-style: preserve-3d;
-      }
-      
-      .front,
-      .back {
-        height: 100%;
-        width: 100%;
-        border-radius: 2rem;
-        box-shadow: 0 0 5px 2px rgba(50, 50, 50, 0.25);
-        position: absolute;
-        backface-visibility: hidden;
-      }
-      
-    .front {
-        background-image: url(templates/Lo.jpg);
-        background-repeat: no-repeat;
-        background-size: contain    ;
-      }
-    .socials a{
-        display: inline-flex;
-        font-size: 40px;
-        text-decoration: none;
-        color: white;
-        margin-left: 20px;
-    }
-      .back {
-        background-image: url(templates/dev1.jpg);
-        background-repeat: no-repeat;
-        background-size: contain    ;
-        transform: rotateY(180deg);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5rem;
-      }
+            /* Team grid: responsive layout for 5 items */
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 2rem;
+                width: 100%;
+                max-width: 1400px;
+                align-items: stretch;
+            }
+
+            .team-card {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card {
+                width: 100%;
+                aspect-ratio: 1/1;
+                max-width: 260px;
+                border-radius: 1rem;
+                overflow: visible;
+                perspective: 1000px; /* for 3D children */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card-inner {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transition: transform 700ms;
+                transform-style: preserve-3d;
+                border-radius: 1rem;
+            }
+
+            /* flip on hover */
+            .card:hover .card-inner,
+            .card:focus-within .card-inner {
+                transform: rotateY(180deg);
+            }
+
+            .card-front,
+            .card-back {
+                position: absolute;
+                inset: 0;
+                border-radius: 1rem;
+                backface-visibility: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 1rem;
+                color: #fff;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            }
+
+            .card-front {
+                background-size: cover;
+                background-position: center;
+            }
+
+            .card-back {
+                transform: rotateY(180deg);
+                background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6));
+                text-align: center;
+                gap: 0.5rem;
+            }
+            .socials a{
+                    display: inline-flex;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: white;
+                    margin: 0 8px;
+            }
+
+
+
+            /* Placeholder back content styling */
+            .placeholder-back {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .placeholder-icon {
+                font-size: 48px;
+                color: #ffffff;
+                background: rgba(0,0,0,0.25);
+                padding: 12px;
+                border-radius: 12px;
+            }
+
+            .placeholder-name {
+                font-size: 18px;
+                color: #fff;
+                margin: 0;
+                padding: 0 0.25rem;
+                word-break: break-word;
+            }
+
+            .placeholder-role {
+                font-size: 14px;
+                color: #dcdcdc;
+                margin: 0;
+                opacity: 0.9;
+            }
     
       
-      .container2 {
-        width: 612px;
-        height: 612px;
-        perspective: 800px;
-      }
-      
-      .container2:hover > .card2 {
-        cursor: pointer;
-        transform: rotateY(180deg) scale(1.2);
-      }
-      
-      .card2 {
-        height: 100%;
-        width: 100%;
-        position: relative;
-        transition: transform 1500ms;
-        transform-style: preserve-3d;
-      }
-      
-      .front2,
-      .back2 {
-        height: 100%;
-        width: 100%;
-        border-radius: 2rem;
-        box-shadow: 0 0 5px 2px rgba(50, 50, 50, 0.25);
-        position: absolute;
-        backface-visibility: hidden;
-      }
-      
-      .front2 {
-        background-image: url(templates/jes.jpg);
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-      
-      .back2 {
-        background-image: url(templates/Dev2.png);
-        background-repeat: no-repeat;
-        background-size: cover;
-        transform: rotateY(180deg);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5rem;
-        
-      }
-      .back2 p{
-        font-weight: lighter;
-      }
+            /* Remove duplicate container2 styles - unified above */
       .Cont {
           max-width: 1170px;
           margin: auto;
       }
+
+/* Placeholder front backgrounds for each card (use existing template images) */
+.front-1 { background-image: url(../templates/Lo.jpg); }
+.front-2 { background-image: url(../templates/jes.jpg); }
+.front-3 { background-image: url(../templates/main.png); }
+.front-4 { background-image: url(../templates/Software.jpg); }
+.front-5 { background-image: url(../templates/Hardware.jpg); }
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+    .team-grid { grid-template-columns: repeat(4, 1fr); max-width: 1100px; }
+}
+
+@media (max-width: 992px) {
+    .team-grid { grid-template-columns: repeat(3, 1fr); max-width: 900px; }
+    .card { max-width: 220px; }
+}
+
+@media (max-width: 768px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .Hold { padding: 3vh 2vw; }
+    .Meet p { font-size: 48px; padding: 120px 12px 100px 12px; height: auto; }
+}
+
+@media (max-width: 480px) {
+    .team-grid { grid-template-columns: 1fr; }
+    .card { max-width: 100%; }
+    .nav a { font-size: 14px; margin-left: 12px; }
+    .Meet p { font-size: 36px; padding: 80px 8px 60px 8px; }
+}
       
       .row {
           display: flex;
