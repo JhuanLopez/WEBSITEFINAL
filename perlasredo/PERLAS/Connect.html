@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="Page/CSS/styles.css">
         <link rel="stylesheet" href="Page/Icons/all.min.css">
         <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
-        <script defer src="Page/JS/Animation.js"></script>
-        <script defer src="Page/JS/Connect.js"></script>
+    <script defer src="Page/JS/Animation.js"></script>
+    <script defer src="Page/JS/Connect.js"></script>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     </head>
    <body>
     <header class="top">
@@ -24,17 +26,12 @@
     </section>
     </div>
     <div class="container">
-        <div class="disc">
-            <p>Send us a message and share your<br>thoughts about this website</p>
-        </div>
-
+  
         <form id="contactForm" class="Holder" novalidate>
-            <div class="Contact">
-                <label for="name" class="label">Name</label>
-                <input id="name" name="name" type="text" required placeholder="Your full name">
-
-                <label for="email" class="label">E-mail</label>
-                <input id="email" name="email" type="email" required placeholder="name@example.com">
+            <!-- Add data attributes for EmailJS -->
+            <div class="Contact" style="display: flex; gap: 10px; align-items: flex-start;">
+                <input id="name" name="name" type="text" required placeholder="Name" style="flex:1; background: #006994; color: #fff; border: 1px solid #004d6d;">
+                <input id="email" name="email" type="email" required placeholder="Email" style="flex:1; background: #009dc4; color: #fff; border: 1px solid #007a99;">
             </div>
 
             <div class="Contact">
@@ -46,6 +43,56 @@
                     <button type="reset" class="Buttons">Reset</button>
                 </div>
                 <div id="formStatus" aria-live="polite" class="form-status" hidden></div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const message = document.getElementById('message');
+        const status = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simple validation
+            let valid = true;
+            if (!name.value.trim()) {
+                name.style.borderColor = 'red';
+                valid = false;
+            } else {
+                name.style.borderColor = '#004d6d';
+            }
+            if (!email.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value)) {
+                email.style.borderColor = 'red';
+                valid = false;
+            } else {
+                email.style.borderColor = '#007a99';
+            }
+            if (!message.value.trim()) {
+                message.style.borderColor = 'red';
+                valid = false;
+            } else {
+                message.style.borderColor = '';
+            }
+            if (!valid) {
+                status.textContent = 'Please fill in all fields correctly.';
+                status.style.color = 'red';
+                status.hidden = false;
+                return;
+            }
+            // Simulate successful send
+            status.textContent = 'Thank you for your message! We will get back to you soon.';
+            status.style.color = 'green';
+            status.hidden = false;
+            form.reset();
+        });
+        form.addEventListener('reset', function() {
+            name.style.borderColor = '#004d6d';
+            email.style.borderColor = '#007a99';
+            message.style.borderColor = '';
+            status.hidden = true;
+        });
+    });
+    </script>
             </div>
         </form>
     </div>
@@ -80,6 +127,33 @@
 </footer>
 <div style="text-align: center; font-weight: lighter; font-size: 10px; width: 100%; background-color: black; color: white;">All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1"</div>
 </div>
+    <script>
+    // Initialize EmailJS (replace with your user ID)
+    (function(){
+        emailjs.init('YOUR_EMAILJS_USER_ID'); // <-- Replace with your EmailJS user ID
+    })();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const status = document.getElementById('formStatus');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            status.hidden = true;
+            // Replace with your EmailJS service ID and template ID
+            emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form)
+                .then(function() {
+                    status.textContent = 'Thank you for your message! We will get back to you soon.';
+                    status.style.color = 'green';
+                    status.hidden = false;
+                    form.reset();
+                }, function(error) {
+                    status.textContent = 'Failed to send message. Please try again later.';
+                    status.style.color = 'red';
+                    status.hidden = false;
+                });
+        });
+    });
+    </script>
     </body>
     
 </html>

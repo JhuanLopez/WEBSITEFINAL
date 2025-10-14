@@ -1,4 +1,4 @@
-// Signup manager: uses the same notification UI/UX as Login.js
+    B// Signup manager: uses the same notification UI/UX as Login.js
 class SignupManager {
     constructor() {
         this.initElements();
@@ -7,7 +7,7 @@ class SignupManager {
 
     initElements() {
         this.form = document.getElementById('signupForm');
-        this.usernameField = document.getElementById('username');
+        this.emailField = document.getElementById('email');
         this.passwordField = document.getElementById('password');
         this.confirmPasswordField = document.getElementById('confirmPassword');
         this.showPasswordCheckbox = document.getElementById('showPassword');
@@ -15,7 +15,7 @@ class SignupManager {
         this.signupButton = document.getElementById('signupButton');
         this.buttonText = this.signupButton.querySelector('.button-text');
         this.loadingSpinner = this.signupButton.querySelector('.loading-spinner');
-        this.usernameError = document.getElementById('usernameError');
+        this.emailError = document.getElementById('emailError');
         this.passwordError = document.getElementById('passwordError');
         this.notificationContainer = document.getElementById('notificationContainer');
     }
@@ -33,16 +33,17 @@ class SignupManager {
             });
         }
 
-        this.usernameField.addEventListener('input', () => this.validateUsername(this.usernameField.value));
+        this.emailField.addEventListener('input', () => this.validateEmail(this.emailField.value));
         this.passwordField.addEventListener('input', () => this.validatePassword(this.passwordField.value));
         this.confirmPasswordField.addEventListener('input', () => this.validateConfirmPassword(this.confirmPasswordField.value));
 
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
     }
 
-    validateUsername(username) {
-        const isValid = username.length >= 3 && !/\s|@/.test(username);
-        this.updateFieldValidation(this.usernameField, this.usernameError, isValid, 'Username must be at least 3 characters and cannot contain spaces or @');
+    validateEmail(email) {
+        // Simple email regex for demonstration
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        this.updateFieldValidation(this.emailField, this.emailError, isValid, 'Please enter a valid email address');
         return isValid;
     }
 
@@ -100,15 +101,15 @@ class SignupManager {
     async handleSubmit(event) {
         event.preventDefault();
 
-        const username = this.usernameField.value.trim();
+        const email = this.emailField.value.trim();
         const password = this.passwordField.value;
         const confirmPassword = this.confirmPasswordField.value;
 
-        const isUsernameValid = this.validateUsername(username);
+        const isEmailValid = this.validateEmail(email);
         const isPasswordValid = this.validatePassword(password);
         const isConfirmValid = this.validateConfirmPassword(confirmPassword);
 
-        if (!isUsernameValid || !isPasswordValid || !isConfirmValid) {
+        if (!isEmailValid || !isPasswordValid || !isConfirmValid) {
             this.showNotification('Please fix the errors above', 'error');
             this.shakeForm();
             return;
@@ -123,7 +124,7 @@ class SignupManager {
             // Attempt Firebase signup
             try {
                 const firebase = await loadFirebase();
-                const pseudoEmail = `${username}@perlas.local`;
+                const pseudoEmail = `${email}`;
 
                 // Check username reservation
                 const nameSnap = await firebase.database().ref('usernames/' + username).once('value');
@@ -188,12 +189,13 @@ class SignupManager {
         if (isLoading) {
             this.signupButton.classList.add('loading');
             if (this.buttonText) this.buttonText.style.display = 'none';
-            if (this.loadingSpinner) this.loadingSpinner.style.display = 'inline-block';
+            // Remove or comment out the loading spinner logic
+            // if (this.loadingSpinner) this.loadingSpinner.style.display = 'inline-block';
             this.signupButton.disabled = true;
         } else {
             this.signupButton.classList.remove('loading');
             if (this.buttonText) this.buttonText.style.display = 'inline-block';
-            if (this.loadingSpinner) this.loadingSpinner.style.display = 'none';
+            // if (this.loadingSpinner) this.loadingSpinner.style.display = 'none';
             this.signupButton.disabled = false;
         }
     }
@@ -251,6 +253,28 @@ shakeStyle.textContent = `
     }
 `;
 document.head.appendChild(shakeStyle);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+    // Remove any text content for toggle buttons
+    togglePassword.textContent = '';
+    togglePassword.addEventListener('click', function() {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        // No text or icon is set
+    });
+
+    toggleConfirmPassword.textContent = '';
+    toggleConfirmPassword.addEventListener('click', function() {
+        const isHidden = confirmPasswordInput.type === 'password';
+        confirmPasswordInput.type = isHidden ? 'text' : 'password';
+        // No text or icon is set
+    });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     new SignupManager();

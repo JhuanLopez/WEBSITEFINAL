@@ -13,9 +13,7 @@
 <body>
     <header class="top">
         <a href="index.html" class="logo">PERLAS</a>
-        <nav class="nav">
-            <a href="index.html">Home</a>
-            <a href="Login.html">LogIn</a>
+       
         </nav>
     </header>
     <div class="body">
@@ -27,36 +25,42 @@
                     <label for="username">Username</label>
                     <div class="input-container">
                         <input type="text" id="username" name="username" required>
-                        <span class="input-icon">👤</span>
+                        <span class="input-icon"></span>
                     </div>
                     <div class="error-message" id="usernameError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-container">
+                    <div class="input-container" style="position: relative;">
                         <input type="password" id="password" name="password" required>
-                        <span class="input-icon">🔒</span>
+                        <span class="input-icon"></span>
+                        <span class="toggle-password" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                     </div>
                     <div class="error-message" id="passwordError"></div>
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="showPassword"> <label for="showPassword">Show Password</label>
-                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
-                    <div class="input-container">
+                    <div class="input-container" style="position: relative;">
                         <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <span class="toggle-password" id="toggleConfirmPassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                     </div>
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="showConfirmPassword"> <label for="showConfirmPassword">Show Password</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-container">
+                        <input type="email" id="email" name="email" required>
+                        <span class="input-icon">@</span>
                     </div>
+                    <div class="error-message" id="emailError"></div>
                 </div>
 
                 <button type="submit" class="button" id="signupButton">
                     <span class="button-text">SIGN-UP</span>
-                    <span class="loading-spinner" style="display: none;">⟳</span>
+                    <!-- Remove the loading spinner below -->
+                    <!-- <span class="loading-spinner" style="display: none;">⟳</span> -->
                 </button>
             </form>
 

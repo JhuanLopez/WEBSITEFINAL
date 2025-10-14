@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboards - Perlas</title>
+    <link rel="stylesheet" href="Page/CSS/maincontent.css">
+    <link rel="stylesheet" href="Page/CSS/styles.css">
+    <link rel="stylesheet" href="Page/Icons/all.min.css">
+    <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
+    <style>
+        /* Add/override styles for leaderboard table */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px 20px 20px 20px;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+        }
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 16px 12px;
+            text-align: center;
+        }
+        .leaderboard-table th {
+            background: #e0f7fa;
+            color: #006064;
+            font-weight: 600;
+        }
+        .leaderboard-table tr:nth-child(even) {
+            background: #f1f8fa;
+        }
+        .leaderboard-table tr:nth-child(odd) {
+            background: #fff;
+        }
+        .leaderboards-title {
+            font-size: 2rem;
+            margin-bottom: 24px;
+            color: #006064;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        @media (max-width: 900px) {
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+            }
+            .leaderboard-table th, .leaderboard-table td {
+                padding: 8px 4px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="top">
+            <div class="logo">
+                <a href="index.html" style="letter-spacing: 5px; margin-left: 50px; margin-bottom: 30px; text-decoration: none; color: bisque;">PERLAS</a>
+            </div>
+            <i class="fa-solid fa-bars" id="btn"></i>
+            <span style="margin-right: 10px; font-size: 20px ; color: rgba(255, 250, 250, 0.856); pointer-events: none; margin-bottom: 20px;" class="Disc">Menu</span>
+        </div>
+        <ul>
+            <li>
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i><span class="navi">Home</span>
+                </a>
+                <span class="showhover">Home</span>
+            </li>
+            <li>
+                <a href="Connect.html">
+                    <i class="fa-solid fa-ticket-simple"></i><span class="navi">Connect</span>
+                </a>
+                <span class="showhover">Connect</span>
+            </li>
+            <li>
+                <a href="lessonsHome.html"></a>
+                <span class="showhover">Lessons</span>
+            </li>
+            <li>
+                <a href="Services.html"></a>
+                <span class="showhover">Services</span>
+            </li>
+            <li>
+                <a href="AboutUs.html"></a>
+                <span class="showhover">About</span>
+            </li>
+            <li>
+                <a href="Leaderboards.html"></a>
+                <span class="showhover">Leaderboards</span>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h2 class="leaderboards-title"><i class="fa-solid fa-trophy"></i> Leaderboards</h2>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Fish Caught</th>
+                    <th>Achievements Unlocked</th>
+                    <th>Common</th>
+                    <th>Rare</th>
+                    <th>Legendary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>FishMaster</td>
+                    <td>120</td>
+                    <td>8</td>
+                    <td>80</td>
+                    <td>30</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>OceanQueen</td>
+                    <td>110</td>
+                    <td>7</td>
+                    <td>70</td>
+                    <td>30</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>LegendaryLure</td>
+                    <td>100</td>
+                    <td>6</td>
+                    <td>60</td>
+                    <td>30</td>
+                    <td>10</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="footer">
+        <p style="text-align: center; color: rgb(15, 15, 15);">PERLAS 2024</p>
+    </footer>
+</body>
+</html>
