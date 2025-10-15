@@ -2,17 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:Pixels;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     scroll-behavior: smooth;
 }
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pearl.ttf);
-}
-@font-face {
-    font-family: Logo;
-    src: url(Fonts/Blox2.ttf);
-}
+
+/* Removed custom webfont declarations: using system fonts for consistency and performance */
 /* Full screen background & overlay to match login page */
 body {
     background: url('templates/Water.png') no-repeat center center fixed;
@@ -223,7 +217,7 @@ ul{
   .footer-col{
     width: 100%;
 }}
-.Soule p{
+.Perlas p{
     padding: 20px;
     font-size: 70px;
     justify-content: center;

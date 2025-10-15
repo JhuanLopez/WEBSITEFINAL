@@ -2,17 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:Pixels;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     scroll-behavior: smooth; 
 }
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pixellari.ttf);
-}
-@font-face {
-    font-family: Logo;
-    src: url(Fonts/Blox2.ttf);
-}
+
+/* Removed custom webfont declarations: using system fonts for consistency */
 .top{
     position: fixed;
     top: 0;
@@ -61,11 +55,13 @@
 
 .container {
     background-image: url(ico);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 50px rgba(75, 73, 73, 0.815);
-    width: 500px;
-    height: 420px;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(75, 73, 73, 0.18);
+    width: 100%;
+    max-width: 680px; /* slightly larger than content */
+    height: auto;
+    min-height: 420px;
     text-align: center;
     justify-content: center;
     color: rgb(0, 0, 0);
@@ -200,7 +196,7 @@ ul{
     width: 100%;
 }
 }
-.Soule p{
+.Perlas p{
     padding: 20px;
     font-size: 70px;
     justify-content: center;

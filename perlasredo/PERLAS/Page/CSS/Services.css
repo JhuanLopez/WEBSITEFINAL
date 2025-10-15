@@ -3,21 +3,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Pixels;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   scroll-behavior: smooth;
 }
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
-@font-face {
-  font-family: Pixels;
-  src: url(Fonts/Pixellari.ttf);
-}
-@font-face {
-  font-family: Logo;
-  src: url(Fonts/Blox2.ttf);
-}
+/* Removed custom webfonts: use system fonts for consistency */
 .Ol{
   transition: all 0.3s ease;
 }

@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:Pixels;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     scroll-behavior: smooth;
 }
 :root{
@@ -15,30 +15,11 @@
     --accent: #01595f;
     --muted-text: #04454b;
 }
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pixellari.ttf);
-}
-@font-face {
-    font-family: Logo;
-    src: url(Fonts/Blox2.ttf);
-}   
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
 }
-@font-face {
-    font-family: Ghosty;
-    src: url(Fonts/Blox2.ttf);
-}
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pixellari.ttf);
-}
-@font-face {
-    font-family: Logo;
-    src: url(Fonts/Blox2.ttf);
-}
+/* Removed custom webfont declarations to use system fonts for better performance and consistency */
 
 .top{
     position: fixed;
@@ -84,19 +65,18 @@ html, body{
 }
 .main-content{
     position: relative;
-    display: inline-block;
     background-image: url();
     top: 0;
     left: 0;
     transition: all 0.5s ease;
     width: 100%;
-    height: 500px; 
+    height: auto; 
     text-align: center;
     justify-content: center;
-    display: inline;
+    display: block;
 }      
 .main-content section{
-    padding: 100px 0 400px 0;
+    padding: 6rem 1rem 3rem 1rem; /* responsive vertical spacing with side padding */
 }   
 .Topper h1{
     font-size: 50px;
@@ -191,7 +171,7 @@ ul{
   .footer-col{
     width: 100%;
 }}
-.Soule p{
+.Perlas p{
     padding: 20px;
     font-size: 70px;
     justify-content: center;
@@ -251,6 +231,22 @@ ul{
     margin: 1.0rem auto;
     min-height: calc(75vh); /* occupy most of viewport */
 }
+
+/* Center content in each grid cell and make form fields fill available space */
+.Holder{ justify-items: center; }
+.Holder .Contact{ width:100%; max-width: 560px; display:flex; flex-direction:column; align-items:center; }
+.Holder .Contact .label{ width:100%; text-align:center; font-size: clamp(1rem, 1.8vw, 1.2rem); }
+.Holder .Contact input, .Holder .Contact textarea, .Holder .Contact select{
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    font-size: 1.05rem;
+    box-sizing: border-box;
+}
+.Holder .Contact textarea{ min-height: 180px; }
+
+.form-actions{ display:flex; gap: 0.75rem; margin-top: 0.75rem; justify-content: center; }
+.Buttons{ min-width: 140px; padding: 0.9rem 1.2rem; font-size: 1rem; }
 .Contact{
     background: linear-gradient(180deg, rgba(6,101,122,0.06), rgba(45,117,139,0.03));
     border: 1px solid rgba(2, 56, 72, 0.06);
@@ -391,4 +387,43 @@ ul{
 .TF{
     max-height: 100px;
     min-height: 100px;
+}
+
+/* Responsive container and layout refinements */
+.container{
+    width: 100%;
+    max-width: 1200px; /* prevents excessive stretching on large screens */
+    margin: 0 auto;
+    padding: 1.25rem; /* side spacing on small screens */
+    box-sizing: border-box;
+}
+
+/* Page title styling moved from inline */
+.page-title{
+    color: #01292b;
+    margin-top: 4rem;
+    font-family: Pixels;
+    font-size: clamp(1.8rem, 6vw, 4.5rem);
+    font-weight: 700;
+}
+
+/* Make images and media scale within their containers */
+img, picture, video{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 900px){
+    .Holder{ width: 100%; padding: 1rem; gap: 1rem; min-height: 0; }
+}
+
+@media (max-width: 600px){
+    .container{ padding: 1rem 1rem 2rem 1rem; }
+    .page-title{ font-size: 6vw; margin-top: 3.5rem; }
+}
+
+@media (max-width: 480px){
+    .top{ position: fixed; padding: 12px 14px; }
+    .main-content section{ padding-top: 5rem; }
 }

@@ -1,17 +1,18 @@
-body {
-    /* Use the Pixels font from the landing page across the site */
-    font-family: Pixels, Arial, sans-serif;
-    background-color: #7a7777;
-    margin: 0;
-    padding: 0;
+:root{
+    --base-font-size: clamp(16px, 1.6vw, 20px); /* responsive base font */
+    --container-max: 1150px;
+    --site-bg: #7a7777;
 }
 
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pearl.ttf) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+html{ font-size: var(--base-font-size); }
+body {
+    /* Use a system font stack for performance and consistency */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--site-bg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    color: #ffffff;
 }
 
 /* White glow utility and default glow for prominent elements */
@@ -40,17 +41,18 @@ p, body, li, label {
 
 .container {
     width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
+    max-width: var(--container-max);
+    margin: 2.5rem auto;
+    padding: 1.25rem 1.5rem;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.603);
-    border-radius: 8px; 
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.12);
+    border-radius: 12px; 
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
 }
 
 .form-group {
@@ -64,21 +66,37 @@ label {
 
 input, select {
     width: 100%;
-    padding: 10px;
+    padding: 10px;  
     box-sizing: border-box;
 }
 
 button {
     width: 100%;
-    padding: 10px;
+    padding: 0.95rem;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 button:hover {
     background-color: #0056b3;
 }
+
+/* Utility: make a container slightly larger than its contents */
+.wide-container{
+    max-width: calc(var(--container-max) + 120px);
+    padding: 2rem 2rem;
+}
+
+/* Larger, more comfortable text and spacing */
+p{
+    font-size: clamp(1rem, 1.8vw, 1.125rem);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+label{ font-size: 1.025rem; }
+input, select, textarea { font-size: 1rem; padding: 0.85rem; }

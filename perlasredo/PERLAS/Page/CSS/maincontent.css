@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:Pixels;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     scroll-behavior: smooth;
 }
 :root{ --hero-min-height: 60vh; }
@@ -14,18 +14,7 @@
     0% { opacity: 0; }
     100% { opacity: 1; }
 }
-@font-face {
-    font-family: Ghosty;
-    src: url(Fonts/Blox2.ttf);
-}
-@font-face {
-    font-family: Pixels;
-    src: url(Fonts/Pixellari.ttf);
-}
-@font-face {
-    font-family: Logo;
-    src: url(Fonts/Blox2.ttf);
-}
+/* Removed custom webfont declarations to use system fonts for better performance and consistency */
 .logo-header{
     position: absolute;
     top: 40%;
@@ -605,7 +594,7 @@ ul{
     color: rgb(0, 0, 0);
     text-decoration: none;
 }
-.Soule p{
+.Perlas p{
     margin-top: 20px;
     font-family: Logo;
     font-size: 90px;
