@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="edit-box">
             <div><label for="editName">Name</label><input id="editName" type="text" /></div>
             <div><label for="editEmail">Email</label><input id="editEmail" type="email" /></div>
+            <div><label for="editPassword">Current password (required to change email)</label><input id="editPassword" type="password" /></div>
+            <div id="editStatus" style="margin-top:8px;font-size:0.95rem;display:none;"></div>
             <div class="edit-actions">
                 <button class="edit-cancel" id="editCancel">Cancel</button>
                 <button class="edit-save" id="editSave">Save</button>
@@ -153,27 +155,89 @@ document.addEventListener('DOMContentLoaded', function() {
     editSave.addEventListener('click', function() {
         const newName = document.getElementById('editName').value.trim();
         const newEmail = document.getElementById('editEmail').value.trim();
-        // Update sessionStorage
-        try {
-            const raw = sessionStorage.getItem('userProfile');
-            let profile = raw ? JSON.parse(raw) : {};
-            if (newName) profile.name = newName;
-            if (newEmail) profile.email = newEmail;
-            sessionStorage.setItem('userProfile', JSON.stringify(profile));
-            emailEl.textContent = newEmail || newName || emailEl.textContent;
-        } catch(e) { console.warn(e); }
-
-        // Try to update Firebase user (displayName only; updating email may require re-auth)
-        if (window.firebase && firebase.auth && typeof firebase.auth === 'function') {
-            const user = firebase.auth().currentUser;
-            if (user) {
-                if (newName && user.updateProfile) {
-                    user.updateProfile({ displayName: newName }).catch(()=>{});
-                }
-                // Do NOT attempt to programmatically update email without re-auth (skip here)
-            }
+        const password = document.getElementById('editPassword').value;
+        const statusEl = document.getElementById('editStatus');
+        function setStatus(text, ok) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = ok ? 'green' : 'red';
+            statusEl.textContent = text;
         }
 
-        editBackdrop.classList.remove('show');
+        // If Firebase available, attempt reauth and update
+        if (window.firebase && firebase.auth && typeof firebase.auth === 'function') {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                setStatus('No authenticated user found.', false);
+                return;
+            }
+
+            // If email changed, require current password for reauth
+            const promises = [];
+            const updates = {};
+            if (newName) updates.displayName = newName;
+
+            if (newEmail && newEmail !== user.email) {
+                if (!password) {
+                    setStatus('Enter current password to change email.', false);
+                    return;
+                }
+                setStatus('Reauthenticating...', true);
+                const cred = firebase.auth.EmailAuthProvider.credential(user.email, password);
+                promises.push(firebase.auth().signInWithCredential(cred).catch(err => Promise.reject(err)));
+            }
+
+            // After reauth (if needed), apply updates
+            Promise.all(promises).then(() => {
+                const tasks = [];
+                if (updates.displayName && user.updateProfile) {
+                    tasks.push(user.updateProfile({ displayName: updates.displayName }));
+                }
+                if (newEmail && newEmail !== user.email) {
+                    // update email (this will succeed only after recent login / reauth)
+                    tasks.push(user.updateEmail(newEmail));
+                }
+
+                Promise.all(tasks).then(() => {
+                    // Write profile to Realtime Database if available
+                    const profileData = { email: newEmail || user.email };
+                    if (newName) profileData.name = newName;
+                    if (window.firebase && firebase.database && typeof firebase.database === 'function') {
+                        const uid = user.uid;
+                        firebase.database().ref('users/' + uid).update(profileData).catch(()=>{});
+                    }
+
+                    // Update sessionStorage
+                    try {
+                        const raw = sessionStorage.getItem('userProfile');
+                        let profile = raw ? JSON.parse(raw) : {};
+                        if (newName) profile.name = newName;
+                        if (newEmail) profile.email = newEmail;
+                        sessionStorage.setItem('userProfile', JSON.stringify(profile));
+                    } catch(e) {}
+
+                    emailEl.textContent = newEmail || newName || user.email;
+                    setStatus('Profile updated successfully.', true);
+                    setTimeout(()=>{ statusEl.style.display='none'; editBackdrop.classList.remove('show'); }, 900);
+                }).catch(err => {
+                    console.error(err);
+                    setStatus('Failed to update profile: ' + (err.message||err), false);
+                });
+            }).catch(err => {
+                setStatus('Reauthentication failed: ' + (err.message||err), false);
+            });
+
+        } else {
+            // No Firebase: fallback to sessionStorage only
+            try {
+                const raw = sessionStorage.getItem('userProfile');
+                let profile = raw ? JSON.parse(raw) : {};
+                if (newName) profile.name = newName;
+                if (newEmail) profile.email = newEmail;
+                sessionStorage.setItem('userProfile', JSON.stringify(profile));
+                emailEl.textContent = newEmail || newName || emailEl.textContent;
+                setStatus('Profile saved locally.', true);
+                setTimeout(()=>{ statusEl.style.display='none'; editBackdrop.classList.remove('show'); }, 700);
+            } catch(e) { setStatus('Failed to save profile locally.', false); }
+        }
     });
 });
