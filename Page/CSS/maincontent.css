@@ -475,6 +475,20 @@ ul{
 .gallery-image-row { gap: 1.6vw !important; }
 #gallery-desc.gallery-desc { margin-top: 8px !important; min-height: 44px !important; font-size: 1.05rem !important; }
 
+/* Migrate inline gallery layout previously in Home.html */
+.gallery-section { width: 100%; display: flex; flex-direction: column; align-items: center; margin: 40px 0; }
+.gallery-wrapper { max-width: 900px; width: 100%; position: relative; }
+.gallery-image-row { display: flex; align-items: center; justify-content: center; gap: 2vw; width: 100%; background: none; box-shadow: none; }
+.gallery-image-row img { border-radius: 0; box-shadow: none; transition: opacity 0.5s, filter 0.5s; cursor: pointer; background: none; }
+.gallery-image-row #gallery-prev-img, .gallery-image-row #gallery-next-img { opacity: 0.5; filter: blur(1px); }
+.gallery-image-row #gallery-image { border-radius: 0; }
+.gallery-indicators { display:flex; justify-content:center; gap:12px; margin-top:18px; }
+
+/* Migrate paragraph paddings from inline styles in Home.html */
+.benefit .card-back p { padding: 40px; }
+.benefit:nth-child(4) .card-back p { padding: 20px; }
+
+
 /* Override inline image sizes from Home.html and make main image more prominent */
 #gallery-image {
     width: 72vw !important;
@@ -711,3 +725,6 @@ ul{
     .gallery-section { margin: 8px 0 !important; }
     #gallery-image { width: 94vw !important; height: auto !important; }
 }
+
+/* small print footer moved from inline style in Home.html */
+.site-smallprint { text-align: center; font-weight: lighter; font-size: 10px; width: 100%; background-color: black; color: white; padding: 6px 8px; }

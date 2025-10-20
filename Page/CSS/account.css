@@ -1,0 +1,63 @@
+/* Account dropdown styles */
+.account-wrap {
+    position: fixed;
+    top: 12px;
+    right: 18px;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+}
+.account-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+}
+.account-btn:focus { outline: 2px solid rgba(0,157,196,0.25); }
+.account-dropdown {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    min-width: 200px;
+    background: #ffffff;
+    color: #1b2b33;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    border-radius: 8px;
+    padding: 8px 0;
+    display: none;
+    flex-direction: column;
+}
+.account-dropdown.show { display: flex; }
+.account-item { padding: 10px 14px; cursor: pointer; font-size: 0.95rem; }
+.account-item:hover { background: #f1fbfd; }
+.account-email { padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #eef6f8; }
+.account-sep { height: 8px; }
+
+/* Confirmation modal */
+.confirm-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; align-items: center; justify-content: center; z-index:1300;
+}
+.confirm-backdrop.show { display: flex; }
+.confirm-box { background: #fff; padding: 18px; border-radius: 8px; min-width: 320px; max-width: 90%; }
+.confirm-actions { margin-top: 12px; display:flex; gap:10px; justify-content:flex-end; }
+.confirm-btn { padding: 6px 12px; border-radius:6px; cursor:pointer; }
+.confirm-yes { background:#d9534f; color:white; border:none; }
+.confirm-no { background:#e9ecef; border:none; }
+
+@media (max-width:640px) {
+    .account-wrap { top: 8px; right: 10px; }
+}
+
+/* Edit profile modal */
+.edit-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; align-items: center; justify-content: center; z-index:1400; }
+.edit-backdrop.show { display: flex; }
+.edit-box { background:#fff; padding: 18px; border-radius: 8px; min-width: 320px; max-width: 90%; }
+.edit-box label { display:block; margin-bottom:6px; font-weight:600; }
+.edit-box input { width: 100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ddd; }
+.edit-actions { display:flex; gap:8px; justify-content:flex-end; }
+.edit-save { background: #007a99; color: #fff; border: none; padding:6px 10px; border-radius:6px; }
+.edit-cancel { background:#e9ecef; border:none; padding:6px 10px; border-radius:6px; }
+

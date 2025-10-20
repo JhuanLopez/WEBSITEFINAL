@@ -1,3 +1,78 @@
+/* Styles extracted from Connect.html inline styles */
+.container {
+    padding: 2rem;
+}
+.Holder {
+    max-width: 900px;
+    margin: 0 auto;
+}
+.Contact {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+.Contact input[type="text"],
+.Contact input[type="email"] {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    background: #006994; /* default - name input */
+    color: #fff;
+    border: 1px solid #004d6d;
+    border-radius: 4px;
+}
+.Contact input[type="email"] {
+    background: #009dc4; /* email input color */
+    border-color: #007a99;
+}
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.Comsec {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+.form-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+}
+.Buttons {
+    background-color: #006994;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.Buttons[type="reset"] {
+    background-color: #444;
+}
+.form-status {
+    margin-top: 0.5rem;
+}
+
+/* Footer small print */
+.TF > div[style] {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 10px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+
+/* Small responsive tweaks */
+@media (max-width: 640px) {
+    .Contact {
+        flex-direction: column;
+    }
+}
 /* Connect.css - updated: ocean theme and improved font sizes for accessibility */
 *{
     margin: 0;
