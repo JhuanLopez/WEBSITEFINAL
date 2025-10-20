@@ -297,7 +297,7 @@ ul{
 }
 }
 .Les{
-    padding: 300px 0 0 0;
+    padding: clamp(2rem, 8vw, 6rem) 0 0 0;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -420,7 +420,7 @@ ul{
 .gallery-wrap{ position: relative; display:flex; align-items:center; }
 .gallery-track{
     display: flex;
-    gap: 28px;
+    gap: 10px;
     overflow-x: auto; /* allow programmatic scrolling */
     padding: 12px 0;
     scroll-snap-type: x mandatory;
@@ -467,6 +467,48 @@ ul{
 .gallery-item{ overflow: hidden; }
 
 .gallery-track.grabbing { cursor: grabbing; }
+
+/* Tighter spacing and larger gallery images overrides */
+.gallery-section { margin: 12px 0 !important; }
+.gallery-section h2 { margin-bottom: 10px !important; }
+.gallery-wrapper { max-width: 1200px; }
+.gallery-image-row { gap: 1.6vw !important; }
+#gallery-desc.gallery-desc { margin-top: 8px !important; min-height: 44px !important; font-size: 1.05rem !important; }
+
+/* Override inline image sizes from Home.html and make main image more prominent */
+#gallery-image {
+    width: 72vw !important;
+    max-width: 1400px !important;
+    height: 84vh !important;
+    object-fit: contain !important;
+}
+#gallery-prev-img, #gallery-next-img {
+    width: 14vw !important;
+    max-width: 320px !important;
+    height: 46vh !important;
+    object-fit: contain !important;
+    opacity: 0.55 !important;
+}
+
+/* Reduce vertical spacing on surrounding descriptive text */
+.main-content2 .container3 p { margin-bottom: 6px !important; line-height: 1.18 !important; }
+.main-content3 .text { margin-top: 8px !important; }
+
+/* Responsive shrink adjustments */
+@media (max-width: 1200px) {
+    #gallery-image { width: 76vw !important; height: 64vh !important; }
+    #gallery-prev-img, #gallery-next-img { width: 18vw !important; height: 36vh !important; }
+}
+@media (max-width: 900px) {
+    #gallery-image { width: 86vw !important; height: 52vh !important; }
+    #gallery-prev-img, #gallery-next-img { width: 20vw !important; height: 30vh !important; display: inline-block !important; }
+    .gallery-image-row { gap: 4vw !important; }
+}
+@media (max-width: 600px) {
+    #gallery-image { width: 92vw !important; height: 42vw !important; }
+    #gallery-prev-img, #gallery-next-img { display: none !important; }
+    .gallery-section { margin: 8px 0 !important; }
+}
 
 
 .Th{
@@ -636,4 +678,36 @@ ul{
 .sidebar.active ~ .main-content3{
     left: 250px;
     width: calc(100% - 250px);
+}
+
+/* ----- Home page responsive overrides (appended) ----- */
+@media (max-width: 1200px) {
+    .container2 .page-title { font-size: clamp(2.6rem, 6vw, 4rem); letter-spacing: 8px; }
+    .Perlas p { font-size: clamp(2rem, 6.5vw, 4.5rem); }
+    .main-content, .main-content2, .main-content3 { left: 0 !important; width: 100% !important; padding-left: 18px !important; padding-right: 18px !important; }
+    .gallery-wrapper { max-width: 95% !important; margin: 0 auto !important; }
+}
+
+@media (max-width: 900px) {
+    :root { --hero-min-height: 40vh; }
+    .container2 { padding: 24px 12px; }
+    .container2 .page-title { font-size: clamp(2.2rem, 8vw, 3.6rem); letter-spacing: 6px; }
+    .Perlas p { font-size: clamp(1.6rem, 8vw, 3rem); }
+    .main-content, .main-content2, .main-content3 { padding: 12px !important; }
+    /* Make gallery stack: hide side previews and keep main image responsive */
+    #gallery-prev-img, #gallery-next-img { display: none !important; }
+    #gallery-image { width: 92vw !important; height: auto !important; max-width: 920px !important; }
+    .gallery-image-row { gap: 4vw !important; }
+    .benefits-grid { flex-direction: column; align-items: center; }
+    .benefit { width: 92% !important; max-width: 420px; }
+}
+
+@media (max-width: 600px) {
+    :root { --hero-min-height: 32vh; }
+    .container2 .page-title { font-size: clamp(1.6rem, 9vw, 2.6rem); letter-spacing: 4px; }
+    .Perlas p { font-size: clamp(1.2rem, 9vw, 2.2rem); }
+    .container3 p { font-size: clamp(0.95rem, 4.6vw, 1.4rem); padding-top: 14px; }
+    .buth { margin-bottom: 12px !important; }
+    .gallery-section { margin: 8px 0 !important; }
+    #gallery-image { width: 94vw !important; height: auto !important; }
 }

@@ -304,7 +304,7 @@ body:before{
 .header-content {
   max-width: 100%;
   margin: 0 auto;
-  padding: 300px 0 200px 0;
+  padding: clamp(2rem, 8vw, 6rem) 0 clamp(1.5rem, 6vw, 4rem) 0;
   text-align: center;
   background-color: #fff;
   color: #000;
@@ -501,12 +501,12 @@ ul{
   .footer-col{
     width: 100%;
 }}
-.Soule p{
-    padding: 20px;
-    font-size: 70px;
-    justify-content: center;
-    align-items: center;
-    font-family: Logo;
+.Perlas p{
+  padding: 20px;
+  font-size: 70px;
+  justify-content: center;
+  align-items: center;
+  font-family: Logo;
 }
 .card-front,
 .card-back{

@@ -1,4 +1,4 @@
-    B// Signup manager: uses the same notification UI/UX as Login.js
+// Signup manager: uses the same notification UI/UX as Login.js
 class SignupManager {
     constructor() {
         this.initElements();
@@ -33,6 +33,7 @@ class SignupManager {
             });
         }
 
+        // Email-only signup — username field removed from markup
         this.emailField.addEventListener('input', () => this.validateEmail(this.emailField.value));
         this.passwordField.addEventListener('input', () => this.validatePassword(this.passwordField.value));
         this.confirmPasswordField.addEventListener('input', () => this.validateConfirmPassword(this.confirmPasswordField.value));
@@ -124,31 +125,32 @@ class SignupManager {
             // Attempt Firebase signup
             try {
                 const firebase = await loadFirebase();
-                const pseudoEmail = `${email}`;
+                const emailVal = (this.emailField && this.emailField.value || '').trim();
 
-                // Check username reservation
-                const nameSnap = await firebase.database().ref('usernames/' + username).once('value');
-                if (nameSnap.exists()) {
-                    this.showNotification('That username is already taken. Please choose another.', 'error');
+                // Validate again before network calls
+                if (!this.validateEmail(emailVal)) {
+                    this.showNotification('Please fix the email above', 'error');
                     this.setLoadingState(false);
                     return;
                 }
 
-                // Create auth user
-                const userCred = await firebase.auth().createUserWithEmailAndPassword(pseudoEmail, password);
+                // Create auth user with the real email
+                const userCred = await firebase.auth().createUserWithEmailAndPassword(emailVal, password);
                 const uid = userCred.user.uid;
 
-                // Set user profile and username->uid mapping atomically
+                // Set user profile at users/{uid}
                 const updates = {};
                 updates[`users/${uid}`] = {
-                    username: username,
+                    email: emailVal,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 };
-                updates[`usernames/${username}`] = uid;
 
                 await firebase.database().ref().update(updates);
 
                 this.showNotification('Account registered successfully. Redirecting to login...', 'success');
+                if (typeof window.pushNotification === 'function') window.pushNotification('Account created — please log in', 'success', 2500);
+                // mark bell dot
+                const dot = document.querySelector('.notify-indicator .dot'); if (dot) dot.style.display = 'block';
                 await this.delay(1000);
                 window.location.href = 'Login.html';
                 return;
@@ -156,7 +158,7 @@ class SignupManager {
                 console.warn('Firebase signup error:', err && err.message ? err.message : err);
 
                 if (err && err.code === 'auth/email-already-in-use') {
-                    this.showNotification('That username is already taken. Please choose another.', 'error');
+                    this.showNotification('That email is already registered. Please log in.', 'error');
                     return;
                 }
 
@@ -165,9 +167,12 @@ class SignupManager {
 
             // Local fallback (insecure) — useful for offline/testing
             try {
-                localStorage.setItem('registeredUsername', username);
+                // Local fallback stores email instead of username
+                localStorage.setItem('registeredEmail', email);
                 localStorage.setItem('registeredPassword', password);
                 this.showNotification('Account registered locally (offline). Redirecting to login...', 'success');
+                if (typeof window.pushNotification === 'function') window.pushNotification('Local account created — please log in', 'info', 2200);
+                const dot2 = document.querySelector('.notify-indicator .dot'); if (dot2) dot2.style.display = 'block';
                 await this.delay(900);
                 window.location.href = 'Login.html';
                 return;
@@ -240,6 +245,11 @@ class SignupManager {
 
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Firebase RTDB keys cannot contain '.' so we escape email to use as a key
+    escapeEmailAsKey(email) {
+        return email.replace(/\./g, ',');
     }
 }
 

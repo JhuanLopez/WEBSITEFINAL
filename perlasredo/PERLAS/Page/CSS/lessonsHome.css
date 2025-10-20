@@ -165,21 +165,20 @@ ul{
     font-family: Logo;
 }
 .Les{
-    padding: 300px 0 300px 0;
+    padding: clamp(2rem, 8vw, 6rem) 0 clamp(2rem, 8vw, 6rem) 0;
     text-align: center;
     justify-content: center;
     align-items: center;
     color: black;
-    font-size: 20vh;
+    font-size: clamp(2rem, 7vw, 8rem);
 }
 .B{
   background: linear-gradient(45deg, #4d4646, #636163);
-    height: 100vh;
+    height: auto;
     font-family: Helvetica, sans-serif;
     color: rgb(211, 211, 211);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    padding: 2rem 1rem;
   }
   .C{
     height: 10vh;

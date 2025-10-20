@@ -1,7 +1,8 @@
 // Simple Firebase loader using the compat SDKs so we can call firebase.auth() and firebase.database()
 // Returns a promise that resolves to the global `firebase` object.
 (function (global) {
-  const FIREBASE_CONFIG = {
+  // Allow overriding via a small client-side env file (Page/JS/env.local.js)
+  const FIREBASE_CONFIG = (window.__ENV && window.__ENV.FIREBASE_CONFIG) ? window.__ENV.FIREBASE_CONFIG : {
     apiKey: "AIzaSyAA25xHdOKXO3Xejj23-JjfGnTDd1gZPZM",
     authDomain: "perlas-database.firebaseapp.com",
     databaseURL: "https://perlas-database-default-rtdb.asia-southeast1.firebasedatabase.app",

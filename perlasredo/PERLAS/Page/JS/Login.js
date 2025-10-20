@@ -8,13 +8,13 @@ class LoginManager {
 
     initializeElements() {
         this.form = document.getElementById('loginForm');
-        this.usernameField = document.getElementById('username');
+        this.emailField = document.getElementById('email');
         this.passwordField = document.getElementById('password');
         this.showPasswordCheckbox = document.getElementById('showPassword');
         this.loginButton = document.getElementById('loginButton');
         this.buttonText = this.loginButton.querySelector('.button-text');
         this.loadingSpinner = this.loginButton.querySelector('.loading-spinner');
-        this.usernameError = document.getElementById('usernameError');
+    this.emailError = document.getElementById('emailError') || document.getElementById('usernameError');
         this.passwordError = document.getElementById('passwordError');
         this.notificationContainer = document.getElementById('notificationContainer');
     }
@@ -26,9 +26,12 @@ class LoginManager {
         });
 
         // Real-time validation
-        this.usernameField.addEventListener('input', () => {
-            this.validateUsername(this.usernameField.value);
-        });
+        // validate email as user types
+        if (this.emailField) {
+            this.emailField.addEventListener('input', () => {
+                this.validateEmail(this.emailField.value);
+            });
+        }
 
         this.passwordField.addEventListener('input', () => {
             this.validatePassword(this.passwordField.value);
@@ -57,10 +60,11 @@ class LoginManager {
         }, 150);
     }
 
-    validateUsername(username) {
-        const isValid = username.length >= 3;
-        this.updateFieldValidation(this.usernameField, this.usernameError, isValid, 
-            'Username must be at least 3 characters long');
+    // Username removed — validateEmail used instead
+
+    validateEmail(email) {
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    this.updateFieldValidation(this.emailField, this.emailError, isValid, 'Please enter a valid email address');
         return isValid;
     }
 
@@ -106,11 +110,13 @@ class LoginManager {
 
     setupValidation() {
         // Initial validation setup
-        this.usernameField.addEventListener('blur', () => {
-            if (this.usernameField.value) {
-                this.validateUsername(this.usernameField.value);
-            }
-        });
+        if (this.emailField) {
+            this.emailField.addEventListener('blur', () => {
+                if (this.emailField.value) {
+                    this.validateEmail(this.emailField.value);
+                }
+            });
+        }
 
         this.passwordField.addEventListener('blur', () => {
             if (this.passwordField.value) {
@@ -121,12 +127,14 @@ class LoginManager {
 
     setupKeyboardNavigation() {
         // Enter key navigation
-        this.usernameField.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                this.passwordField.focus();
-            }
-        });
+        if (this.emailField) {
+            this.emailField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.passwordField.focus();
+                }
+            });
+        }
 
         this.passwordField.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -144,7 +152,7 @@ class LoginManager {
     }
 
     setupFocusEffects() {
-        [this.usernameField, this.passwordField].forEach(field => {
+        [this.emailField, this.passwordField].forEach(field => {
             field.addEventListener('focus', () => {
                 field.parentElement.style.transform = 'scale(1.02)';
             });
@@ -158,14 +166,14 @@ class LoginManager {
     async handleFormSubmit(event) {
         event.preventDefault();
 
-        const username = this.usernameField.value.trim();
+        const email = (this.emailField && this.emailField.value || '').trim();
         const password = this.passwordField.value.trim();
 
         // Validate all fields
-        const isUsernameValid = this.validateUsername(username);
+        const isEmailValid = this.validateEmail(email);
         const isPasswordValid = this.validatePassword(password);
 
-        if (!isUsernameValid || !isPasswordValid) {
+        if (!isEmailValid || !isPasswordValid) {
             this.showNotification('Please fix the errors above', 'error');
             this.shakeForm();
             return;
@@ -179,7 +187,7 @@ class LoginManager {
             await this.delay(1500);
 
             // Check credentials
-            const result = await this.authenticateUser(username, password);
+            const result = await this.authenticateUser(email, password);
             
             if (result.success) {
                 this.showNotification('Login successful! Redirecting...', 'success');
@@ -196,21 +204,20 @@ class LoginManager {
         }
     }
 
-    async authenticateUser(username, password) {
-        // Try Firebase Auth first (username used as pseudo-email)
+    async authenticateUser(email, password) {
+        // Try Firebase Auth first (email + password)
         try {
             if (typeof loadFirebase === 'function') {
                 const firebase = await loadFirebase();
-                const pseudoEmail = `${username}@perlas.local`;
 
-                const userCred = await firebase.auth().signInWithEmailAndPassword(pseudoEmail, password);
+                const userCred = await firebase.auth().signInWithEmailAndPassword(email, password);
                 if (userCred && userCred.user) {
                     // fetch profile from realtime DB
                     try {
                         const uid = userCred.user.uid;
                         const snap = await firebase.database().ref('users/' + uid).once('value');
-                        const profile = snap.val() || { username };
-                        // Optionally store profile in sessionStorage for the session
+                        const profile = snap.val() || { email };
+                        // store profile in sessionStorage for the session
                         try { sessionStorage.setItem('userProfile', JSON.stringify(profile)); } catch(e){}
                         return { success: true, message: 'Login successful (Firebase)!', profile };
                     } catch (dbErr) {
@@ -225,20 +232,19 @@ class LoginManager {
         }
 
         // Local fallback (insecure) — useful for offline/testing
-        const registeredUsername = localStorage.getItem('registeredUsername');
+        const registeredEmail = localStorage.getItem('registeredEmail');
         const registeredPassword = localStorage.getItem('registeredPassword');
 
-        if (!registeredUsername || !registeredPassword) {
+        if (!registeredEmail || !registeredPassword) {
             return {
                 success: false,
                 message: 'No registered user found. Please sign up first.'
             };
         }
-
-        if (username !== registeredUsername) {
+        if (email !== registeredEmail) {
             return {
                 success: false,
-                message: 'Username not found. Please check your username.'
+                message: 'Email not found. Please check your email.'
             };
         }
 
@@ -305,11 +311,11 @@ class LoginManager {
     }
 
     clearForm() {
-        this.usernameField.value = '';
+        if (this.emailField) this.emailField.value = '';
         this.passwordField.value = '';
-        this.usernameField.classList.remove('error', 'success');
+        if (this.emailField) this.emailField.classList.remove('error', 'success');
         this.passwordField.classList.remove('error', 'success');
-        this.hideError(this.usernameError);
+    this.hideError(this.emailError);
         this.hideError(this.passwordError);
         this.showNotification('Form cleared', 'info');
     }
@@ -338,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Add some additional interactive features
 document.addEventListener('DOMContentLoaded', () => {
     // Add floating labels effect
-    const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+    const inputs = document.querySelectorAll('input[type="email"], input[type="text"], input[type="password"]');
     
     inputs.forEach(input => {
         const label = input.previousElementSibling;
