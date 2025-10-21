@@ -2,6 +2,22 @@
 <html lang="en">
     <style>
         /* Add/override styles for leaderboard table */
+        body {
+            background: url('Page/CSS/templates/Water.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
         .main-content {
             margin-left: 260px;
             padding: 40px 20px 20px 20px;
