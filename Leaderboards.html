@@ -51,7 +51,6 @@
                 </tr>
             </thead>
             <tbody id="leaderboardBody">
-                <tr><td colspan="7">Loading...</td></tr>
             </tbody>
         </table>
     </div>
@@ -70,7 +69,7 @@
         }
         waitForFirebase(async function() {
             const leaderboardBody = document.getElementById('leaderboardBody');
-            leaderboardBody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+            leaderboardBody.innerHTML = '';
             try {
                 // Fetch all users
                 const usersSnap = await firebase.database().ref('users').once('value');
@@ -126,14 +125,4 @@
         });
     });
     </script>
-                    <td>30</td>
-                    <td>10</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <footer class="footer">
-        <p style="text-align: center; color: rgb(15, 15, 15);">PERLAS 2024</p>
-    </footer>
-</body>
-</html>
+<!-- ...existing code ends after the script... -->
