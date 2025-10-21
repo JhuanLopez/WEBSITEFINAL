@@ -88,6 +88,12 @@
                 margin-top: 6px;
             }
         }
+            .footer-text {
+                text-align: center;
+                color: rgb(15, 15, 15);
+                margin: 0;
+                font-size: 1rem;
+            }
     </style>
     <!-- ...existing code... -->
 </head>
@@ -101,7 +107,6 @@
             <table class="leaderboard-table" id="leaderboardTable">
                 <thead>
                     <tr>
-                        <th>Rank</th>
                         <th>Email</th>
                         <th>Total Fish</th>
                     </tr>
@@ -112,7 +117,7 @@
         </div>
     </div>
     <footer class="footer">
-        <p style="text-align: center; color: rgb(15, 15, 15);">PERLAS 2024</p>
+    <p class="footer-text">PERLAS 2024</p>
     </footer>
     <!-- Firebase leaderboard script -->
     <script defer src="Page/JS/firebase-init.js"></script>
@@ -131,7 +136,7 @@
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
                         let total = caughtFish.length;
                         leaderboard.push({
-                            email: user.email ? user.email : '',
+                            email: user.email ? user.email : 'Unknown',
                             total
                         });
                     });
@@ -141,8 +146,7 @@
                     leaderboardBody.innerHTML = '';
                     leaderboard.forEach(function(row, i) {
                         leaderboardBody.innerHTML += `<tr>
-                            <td>${i+1}</td>
-                            <td>${row.email ? row.email : 'Unknown'}</td>
+                            <td>${row.email}</td>
                             <td>${row.total}</td>
                         </tr>`;
                     });
@@ -154,4 +158,3 @@
         });
     });
     </script>
-<!-- ...existing code ends after the script... -->
