@@ -68,10 +68,7 @@
                 let userFetches = userEntries.map(([uid, user]) => {
                     return firebase.database().ref('users/' + uid + '/caughtFish').once('value').then(function(fishSnap) {
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
-                        let total = 0;
-                        for (const fish of caughtFish) {
-                            total++;
-                        }
+                        let total = caughtFish.length;
                         leaderboard.push({
                             email: user.email || uid,
                             total
