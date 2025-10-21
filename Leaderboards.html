@@ -131,7 +131,7 @@
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
                         let total = caughtFish.length;
                         leaderboard.push({
-                            email: user.email || uid,
+                            email: user.email ? user.email : '',
                             total
                         });
                     });
@@ -142,7 +142,7 @@
                     leaderboard.forEach(function(row, i) {
                         leaderboardBody.innerHTML += `<tr>
                             <td>${i+1}</td>
-                            <td>${row.email}</td>
+                            <td>${row.email ? row.email : 'Unknown'}</td>
                             <td>${row.total}</td>
                         </tr>`;
                     });
