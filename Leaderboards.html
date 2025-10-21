@@ -38,17 +38,25 @@
 </head>
 <body>
     <div class="main-content">
-        <h1 class="leaderboards-title">Leaderboards</h1>
-        <table class="leaderboard-table" id="leaderboardTable">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Email</th>
-                    <th>Total Fish</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboardBody">
-            </tbody>
+        <div class="leaderboard-header">
+            <h1 class="leaderboards-title">Leaderboards</h1>
+            <div class="game-name">Perlas Game</div>
+        </div>
+        <div class="table-responsive">
+            <table class="leaderboard-table" id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player Name</th>
+                        <th>Email</th>
+                        <th>Total Fish</th>
+                        <th>Other Info</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                </tbody>
+            </table>
+        </div>
     </div>
     <footer class="footer">
         <p style="text-align: center; color: rgb(15, 15, 15);">PERLAS 2024</p>
@@ -70,8 +78,10 @@
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
                         let total = caughtFish.length;
                         leaderboard.push({
+                            name: user.name || 'Unknown',
                             email: user.email || uid,
-                            total
+                            total,
+                            other: user.otherInfo || ''
                         });
                     });
                 });
@@ -81,15 +91,93 @@
                     leaderboard.forEach(function(row, i) {
                         leaderboardBody.innerHTML += `<tr>
                             <td>${i+1}</td>
+                            <td>${row.name}</td>
                             <td>${row.email}</td>
                             <td>${row.total}</td>
+                            <td>${row.other}</td>
                         </tr>`;
                     });
-                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="3">No data found.</td></tr>';
+                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="5">No data found.</td></tr>';
                 });
             }).catch(function(err) {
-                leaderboardBody.innerHTML = '<tr><td colspan="3">Failed to load leaderboard.</td></tr>';
+                leaderboardBody.innerHTML = '<tr><td colspan="5">Failed to load leaderboard.</td></tr>';
             });
+    <style>
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+        font-size: 1rem;
+    }
+    .leaderboard-table th, .leaderboard-table td {
+        padding: 12px 8px;
+        text-align: center;
+        min-width: 90px;
+    }
+    .leaderboard-table th {
+        background: #e0f7fa;
+        color: #006064;
+        font-weight: 600;
+    }
+    .leaderboard-table tr:nth-child(even) {
+        background: #f1f8fa;
+    }
+    .leaderboard-table tr:nth-child(odd) {
+        background: #fff;
+    }
+    .leaderboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+    .leaderboard-header h1 {
+        margin: 0;
+        font-size: 2rem;
+    }
+    .game-name {
+        font-size: 1.2rem;
+        color: #009dc4;
+        font-weight: bold;
+        margin-left: 12px;
+    }
+    @media (max-width: 700px) {
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 8px 4px;
+            font-size: 0.95rem;
+            min-width: 60px;
+        }
+        .leaderboard-header h1 {
+            font-size: 1.2rem;
+        }
+        .game-name {
+            font-size: 1rem;
+        }
+    }
+    @media (max-width: 500px) {
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 6px 2px;
+            font-size: 0.85rem;
+            min-width: 40px;
+        }
+        .leaderboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .game-name {
+            margin-left: 0;
+            margin-top: 6px;
+        }
+    }
+    </style>
         });
     });
     </script>
