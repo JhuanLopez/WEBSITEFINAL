@@ -60,21 +60,7 @@
                 </button>
 
             </form>
-            <script>
-            // Show/hide password logic for both fields
-            document.addEventListener('DOMContentLoaded', function() {
-                var showPassword = document.getElementById('showPassword');
-                var password = document.getElementById('password');
-                var confirmPassword = document.getElementById('confirmPassword');
-                if (showPassword && password && confirmPassword) {
-                    showPassword.addEventListener('change', function() {
-                        var type = showPassword.checked ? 'text' : 'password';
-                        password.type = type;
-                        confirmPassword.type = type;
-                    });
-                }
-            });
-            </script>
+            <!-- Show/hide password logic moved to Signup.js for modularity -->
 
             <div class="Sign">
                 <br>
@@ -85,5 +71,16 @@
    <footer style="text-align:center; font-weight:300; font-size:12px; width:100%; background-color:#000; color:#fff; padding:10px 0; margin-top:32px;">
             All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1
         </footer>
+    <div id="firebaseError" style="display:none;color:red;text-align:center;margin-top:10px;">Firebase failed to initialize. Please check your configuration.</div>
+    <script>
+    // Simple check for Firebase initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            if (!(window.firebase && firebase.auth && firebase.database)) {
+                document.getElementById('firebaseError').style.display = 'block';
+            }
+        }, 1000);
+    });
+    </script>
 </body>
 </html>
