@@ -60,68 +60,56 @@
     <!-- Firebase leaderboard script -->
     <script defer src="Page/JS/firebase-init.js"></script>
     <script>
-    // Assumes firebase-init.js loads and initializes firebase
+    // Use loadFirebase() to ensure Firebase is loaded before accessing database
     document.addEventListener('DOMContentLoaded', function() {
-        // Wait for firebase to be loaded
-        function waitForFirebase(cb) {
-            if (window.firebase && firebase.database) cb();
-            else setTimeout(() => waitForFirebase(cb), 100);
-        }
-        waitForFirebase(async function() {
+        loadFirebase().then(function(firebase) {
             const leaderboardBody = document.getElementById('leaderboardBody');
             leaderboardBody.innerHTML = '';
-            try {
-                // Fetch all users
-                const usersSnap = await firebase.database().ref('users').once('value');
+            firebase.database().ref('users').once('value').then(function(usersSnap) {
                 const users = usersSnap.val() || {};
                 const leaderboard = [];
-                // For each user, fetch their caught fish info
                 const userEntries = Object.entries(users);
-                for (const [uid, user] of userEntries) {
-                    // Assume caught fish are under users/{uid}/caughtFish or similar
-                    let fishSnap = null;
-                    try {
-                        fishSnap = await firebase.database().ref('users/' + uid + '/caughtFish').once('value');
-                    } catch (e) {}
-                    const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
-                    // Count by rarity
-                    let total = 0, common = 0, rare = 0, epic = 0, legendary = 0;
-                    for (const fish of caughtFish) {
-                        total++;
-                        const rarity = (fish.rarity || '').toLowerCase();
-                        if (rarity === 'common') common++;
-                        else if (rarity === 'rare') rare++;
-                        else if (rarity === 'epic') epic++;
-                        else if (rarity === 'legendary') legendary++;
-                    }
-                    leaderboard.push({
-                        email: user.email || uid,
-                        total,
-                        common,
-                        rare,
-                        epic,
-                        legendary
+                let userFetches = userEntries.map(([uid, user]) => {
+                    return firebase.database().ref('users/' + uid + '/caughtFish').once('value').then(function(fishSnap) {
+                        const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
+                        let total = 0, common = 0, rare = 0, epic = 0, legendary = 0;
+                        for (const fish of caughtFish) {
+                            total++;
+                            const rarity = (fish.rarity || '').toLowerCase();
+                            if (rarity === 'common') common++;
+                            else if (rarity === 'rare') rare++;
+                            else if (rarity === 'epic') epic++;
+                            else if (rarity === 'legendary') legendary++;
+                        }
+                        leaderboard.push({
+                            email: user.email || uid,
+                            total,
+                            common,
+                            rare,
+                            epic,
+                            legendary
+                        });
                     });
-                }
-                // Sort by total fish caught descending
-                leaderboard.sort((a, b) => b.total - a.total);
-                // Render table
-                leaderboardBody.innerHTML = '';
-                leaderboard.forEach((row, i) => {
-                    leaderboardBody.innerHTML += `<tr>
-                        <td>${i+1}</td>
-                        <td>${row.email}</td>
-                        <td>${row.total}</td>
-                        <td>${row.common}</td>
-                        <td>${row.rare}</td>
-                        <td>${row.epic}</td>
-                        <td>${row.legendary}</td>
-                    </tr>`;
                 });
-                if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="7">No data found.</td></tr>';
-            } catch (err) {
+                Promise.all(userFetches).then(function() {
+                    leaderboard.sort((a, b) => b.total - a.total);
+                    leaderboardBody.innerHTML = '';
+                    leaderboard.forEach(function(row, i) {
+                        leaderboardBody.innerHTML += `<tr>
+                            <td>${i+1}</td>
+                            <td>${row.email}</td>
+                            <td>${row.total}</td>
+                            <td>${row.common}</td>
+                            <td>${row.rare}</td>
+                            <td>${row.epic}</td>
+                            <td>${row.legendary}</td>
+                        </tr>`;
+                    });
+                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="7">No data found.</td></tr>';
+                });
+            }).catch(function(err) {
                 leaderboardBody.innerHTML = '<tr><td colspan="7">Failed to load leaderboard.</td></tr>';
-            }
+            });
         });
     });
     </script>
