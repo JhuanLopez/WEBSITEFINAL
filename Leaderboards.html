@@ -47,10 +47,8 @@
                 <thead>
                     <tr>
                         <th>Rank</th>
-                        <th>Player Name</th>
                         <th>Email</th>
                         <th>Total Fish</th>
-                        <th>Other Info</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
@@ -78,10 +76,8 @@
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
                         let total = caughtFish.length;
                         leaderboard.push({
-                            name: user.name || 'Unknown',
                             email: user.email || uid,
-                            total,
-                            other: user.otherInfo || ''
+                            total
                         });
                     });
                 });
@@ -91,16 +87,14 @@
                     leaderboard.forEach(function(row, i) {
                         leaderboardBody.innerHTML += `<tr>
                             <td>${i+1}</td>
-                            <td>${row.name}</td>
                             <td>${row.email}</td>
                             <td>${row.total}</td>
-                            <td>${row.other}</td>
                         </tr>`;
                     });
-                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="5">No data found.</td></tr>';
+                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="3">No data found.</td></tr>';
                 });
             }).catch(function(err) {
-                leaderboardBody.innerHTML = '<tr><td colspan="5">Failed to load leaderboard.</td></tr>';
+                leaderboardBody.innerHTML = '<tr><td colspan="3">Failed to load leaderboard.</td></tr>';
             });
     <style>
     .table-responsive {
