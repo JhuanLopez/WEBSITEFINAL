@@ -42,17 +42,13 @@
         <table class="leaderboard-table" id="leaderboardTable">
             <thead>
                 <tr>
+                    <th>Rank</th>
                     <th>Email</th>
                     <th>Total Fish</th>
-                    <th>Common</th>
-                    <th>Rare</th>
-                    <th>Epic</th>
-                    <th>Legendary</th>
                 </tr>
             </thead>
             <tbody id="leaderboardBody">
             </tbody>
-        </table>
     </div>
     <footer class="footer">
         <p style="text-align: center; color: rgb(15, 15, 15);">PERLAS 2024</p>
@@ -72,22 +68,13 @@
                 let userFetches = userEntries.map(([uid, user]) => {
                     return firebase.database().ref('users/' + uid + '/caughtFish').once('value').then(function(fishSnap) {
                         const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
-                        let total = 0, common = 0, rare = 0, epic = 0, legendary = 0;
+                        let total = 0;
                         for (const fish of caughtFish) {
                             total++;
-                            const rarity = (fish.rarity || '').toLowerCase();
-                            if (rarity === 'common') common++;
-                            else if (rarity === 'rare') rare++;
-                            else if (rarity === 'epic') epic++;
-                            else if (rarity === 'legendary') legendary++;
                         }
                         leaderboard.push({
                             email: user.email || uid,
-                            total,
-                            common,
-                            rare,
-                            epic,
-                            legendary
+                            total
                         });
                     });
                 });
@@ -99,16 +86,12 @@
                             <td>${i+1}</td>
                             <td>${row.email}</td>
                             <td>${row.total}</td>
-                            <td>${row.common}</td>
-                            <td>${row.rare}</td>
-                            <td>${row.epic}</td>
-                            <td>${row.legendary}</td>
                         </tr>`;
                     });
-                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="7">No data found.</td></tr>';
+                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="3">No data found.</td></tr>';
                 });
             }).catch(function(err) {
-                leaderboardBody.innerHTML = '<tr><td colspan="7">Failed to load leaderboard.</td></tr>';
+                leaderboardBody.innerHTML = '<tr><td colspan="3">Failed to load leaderboard.</td></tr>';
             });
         });
     });
