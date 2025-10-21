@@ -32,22 +32,25 @@
                     <div class="error-message" id="emailError"></div>
                 </div>
 
+
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-container" style="position: relative;">
+                    <div class="input-container">
                         <input type="password" id="password" name="password" required>
                         <span class="input-icon"></span>
-                        <span class="toggle-password" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                     </div>
                     <div class="error-message" id="passwordError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
-                    <div class="input-container" style="position: relative;">
+                    <div class="input-container">
                         <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        <span class="toggle-password" id="toggleConfirmPassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                     </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="showPassword"> <label for="showPassword">Show Password</label>
                 </div>
 
                 <button type="submit" class="button" id="signupButton">
@@ -55,7 +58,23 @@
                     <!-- Remove the loading spinner below -->
                     <!-- <span class="loading-spinner" style="display: none;">⟳</span> -->
                 </button>
+
             </form>
+            <script>
+            // Show/hide password logic for both fields
+            document.addEventListener('DOMContentLoaded', function() {
+                var showPassword = document.getElementById('showPassword');
+                var password = document.getElementById('password');
+                var confirmPassword = document.getElementById('confirmPassword');
+                if (showPassword && password && confirmPassword) {
+                    showPassword.addEventListener('change', function() {
+                        var type = showPassword.checked ? 'text' : 'password';
+                        password.type = type;
+                        confirmPassword.type = type;
+                    });
+                }
+            });
+            </script>
 
             <div class="Sign">
                 <br>
