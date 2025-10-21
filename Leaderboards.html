@@ -33,6 +33,61 @@
         .leaderboards-title {
             font-size: 2rem;
         }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .leaderboard-table {
+            font-size: 1rem;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+            min-width: 90px;
+        }
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .leaderboard-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .game-name {
+            font-size: 1.2rem;
+            color: #009dc4;
+            font-weight: bold;
+            margin-left: 12px;
+        }
+        @media (max-width: 700px) {
+            .leaderboard-table th, .leaderboard-table td {
+                padding: 8px 4px;
+                font-size: 0.95rem;
+                min-width: 60px;
+            }
+            .leaderboard-header h1 {
+                font-size: 1.2rem;
+            }
+            .game-name {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 500px) {
+            .leaderboard-table th, .leaderboard-table td {
+                padding: 6px 2px;
+                font-size: 0.85rem;
+                min-width: 40px;
+            }
+            .leaderboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .game-name {
+                margin-left: 0;
+                margin-top: 6px;
+            }
+        }
     </style>
     <!-- ...existing code... -->
 </head>
@@ -96,82 +151,6 @@
             }).catch(function(err) {
                 leaderboardBody.innerHTML = '<tr><td colspan="3">Failed to load leaderboard.</td></tr>';
             });
-    <style>
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-    }
-    .leaderboard-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-        font-size: 1rem;
-    }
-    .leaderboard-table th, .leaderboard-table td {
-        padding: 12px 8px;
-        text-align: center;
-        min-width: 90px;
-    }
-    .leaderboard-table th {
-        background: #e0f7fa;
-        color: #006064;
-        font-weight: 600;
-    }
-    .leaderboard-table tr:nth-child(even) {
-        background: #f1f8fa;
-    }
-    .leaderboard-table tr:nth-child(odd) {
-        background: #fff;
-    }
-    .leaderboard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-        flex-wrap: wrap;
-    }
-    .leaderboard-header h1 {
-        margin: 0;
-        font-size: 2rem;
-    }
-    .game-name {
-        font-size: 1.2rem;
-        color: #009dc4;
-        font-weight: bold;
-        margin-left: 12px;
-    }
-    @media (max-width: 700px) {
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 8px 4px;
-            font-size: 0.95rem;
-            min-width: 60px;
-        }
-        .leaderboard-header h1 {
-            font-size: 1.2rem;
-        }
-        .game-name {
-            font-size: 1rem;
-        }
-    }
-    @media (max-width: 500px) {
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 6px 2px;
-            font-size: 0.85rem;
-            min-width: 40px;
-        }
-        .leaderboard-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .game-name {
-            margin-left: 0;
-            margin-top: 6px;
-        }
-    }
-    </style>
         });
     });
     </script>
