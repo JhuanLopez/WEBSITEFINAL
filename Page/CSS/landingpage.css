@@ -86,12 +86,12 @@ body::before {
 }
 .description h1 {
     font-size: 2.5rem;
-    color: #004d40;
+    color: #030303;
     margin-bottom: 1rem;
 }
 .description p {
     font-size: 1rem;
-    color: #004d40;
+    color: #000000;
     margin-bottom: 2rem;
 }
 .buttons {
@@ -106,22 +106,22 @@ body::before {
     font-weight: bold;
 }
 .signup {
-    background-color: #4e4e4e;
-    color: white;
+    background-color: hwb(0 99% 0%);
+    color: rgb(3, 3, 3);
     font-weight: lighter;
 }
 .signup:hover{
-    background-color: #6e6e6e;
-    color: white;
+    background-color: #fffdfd;
+    color: rgb(0, 0, 0);
 }
 .login {
-    background-color: #4e4e4e;
+    background-color:hwb(0 0% 100%);
     color: white;
     font-weight: lighter;
 }
 .login:hover {
-    background-color: #6e6e6e;
-    color: white;
+    background-color: #fffdfd;
+    color: rgb(0, 0, 0);
 }
 @media (max-width: 768px) {
     .description h1 {
