@@ -1,7 +1,7 @@
 :root{
     --base-font-size: clamp(16px, 1.6vw, 20px); /* responsive base font */
     --container-max: 1150px;
-    --site-bg: #7a7777;
+    --site-bg: #f7f7f5; /* off-white background */
 }
 
 html{ font-size: var(--base-font-size); }
@@ -12,13 +12,13 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
-    color: #ffffff;
+    color: #000000; /* make main text black */
 }
 
 /* White glow utility and default glow for prominent elements */
 .glow-white {
-    color: #ffffff !important;
-    text-shadow: 0 2px 8px rgba(255,255,255,0.95), 0 0 24px rgba(255,255,255,0.35);
+    color: #000000 !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 /* Apply glow to common prominent elements site-wide (override as needed) */
@@ -29,14 +29,14 @@ h1, h2, h3,
 .btn, .button,
 .Link,
 .footer-col h4 {
-    color: #ffffff;
-    text-shadow: 0 2px 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.3);
+    color: #000000;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 /* For paragraphs and body text use a subtler glow to keep readability */
 p, body, li, label {
-    color: #ffffff;
-    text-shadow: 0 1px 4px rgba(255,255,255,0.25);
+    color: #000000;
+    text-shadow: none;
 }
 
 .container {
