@@ -7,9 +7,13 @@
 }
 
 /* Removed custom webfont declarations: using system fonts for consistency and performance */
-/* Page-level background: off-white is provided by global styles; keep a subtle overlay when needed */
+/* Full screen background & overlay to match login page */
 body {
-    background-color: inherit; /* use site's off-white */
+    /* Show the full image without cropping */
+    background: url('templates/Water.png') no-repeat center center fixed;
+    background-size: contain; /* changed from cover to contain so image isn't cropped */
+    background-color: #f7f7f5; /* fallback/off-white */
+    background-position: center top;
     min-height: 100vh;
     position: relative;
 }
@@ -21,7 +25,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0); /* no dark overlay for landing; keep image crisp */
+    background: rgba(0, 0, 0, 0.15); /* slightly lighter overlay for landing page */
     z-index: -1;
 }
 .top{
@@ -63,16 +67,11 @@ body::before {
 }
 .logo {
     width: 100%;
-    /* center hero image with off-white bands above and below */
-    height: 46vh; /* hero strip height; adjust for visual balance */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent; /* allow page off-white to show above/below */
-    background-image: url('../images/BGindex.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain; /* keep aspect ratio like reference */
+    background-color: transparent; /* allow background image to show through */
 }
 .logo p {
     font-family: Logo;
