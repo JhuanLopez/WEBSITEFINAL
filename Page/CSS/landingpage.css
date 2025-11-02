@@ -111,16 +111,16 @@ body::before {
     font-weight: lighter;
 }
 .signup:hover{
-    background-color: #fffdfd;
-    color: rgb(0, 0, 0);
+    background-color: #727070;
+    color: rgb(248, 246, 246);
 }
 .login {
-    background-color:hwb(0 0% 100%);
+    background-color:hwb(0 100% 0%);
     color: white;
     font-weight: lighter;
 }
 .login:hover {
-    background-color: #fffdfd;
+    background-color: #727070;
     color: rgb(0, 0, 0);
 }
 @media (max-width: 768px) {
