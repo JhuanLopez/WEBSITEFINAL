@@ -9,40 +9,125 @@
 /* Removed custom webfont declarations: using system fonts for consistency and performance */
 /* Full screen background & overlay to match login page */
 body {
-    /* Show the full image without cropping */
-    background: url('templates/Water.png') no-repeat center center fixed;
-    background-size: contain; /* changed from cover to contain so image isn't cropped */
+    /* Full-screen background image for the index page */
+    background: url('../images/IndexBG.png') no-repeat center center fixed;
+    background-size: cover; /* fill the viewport */
     background-color: #f7f7f5; /* fallback/off-white */
-    background-position: center top;
     min-height: 100vh;
     position: relative;
 }
 
-body::before {
+/* Slight overlay to improve text contrast on top of the background image */
+body::before{
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.15); /* slightly lighter overlay for landing page */
-    z-index: -1;
+    inset: 0;
+    background: rgba(247,247,245,0.25); /* subtle light overlay to keep airy feel */
+    z-index: 0;
+    pointer-events: none;
 }
 .top{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    margin-top: 50;
     padding: 20px 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 99;
+    background-color: var(--site-bg); /* use global site background */
 }
 .top .log{
-    font-size: 2em;
-    color: rgb(0, 0, 0);
+    display:none; /* no inline title here; hero title used instead */
+}
+
+/* Decorative centered short line at top */
+.decor-line{
+    width: 40px;
+    height: 4px;
+    background: #1b1818;
+    margin: 18px auto 6px;
+}
+
+.top.centered {
+    justify-content: center;
+}
+
+/* Hero title and layout to match mockup */
+.landing-main{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 0 16px; /* horizontal padding only; vertical centering via fixed positioning */
+    margin: 0 auto;
+    max-width: var(--container-max);
+    width: 100%;
+    z-index: 50;
+}
+.hero-title{
+    margin: 40px auto 30px;
+    font-size: clamp(2rem, 5.5vw, 3.5rem);
+    letter-spacing: 0.8rem;
+    text-transform: uppercase;
+    color: #1b1818;
+    line-height: 1.05;
+    font-weight: 700;
+}
+.links-row{
+    display: flex;
+    justify-content: center;
+    gap: 160px;
+    margin: 60px 0 40px;
+}
+.hero-link{
+    color: #1b1818;
     text-decoration: none;
+    letter-spacing: 0.6rem;
+    font-size: 0.95rem;
+    padding: 10px 8px;
+}
+.hero-link{
+    position: relative; /* for underline animation */
+}
+
+/* animated underline: scales from center on hover/focus */
+.hero-link::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    bottom: -8px;
+    height: 2px;
+    width: 60%;
+    background: #1b1818;
+    transition: transform 220ms cubic-bezier(.2,.8,.2,1);
+    will-change: transform;
+}
+.hero-link:hover::after,
+.hero-link:focus::after,
+.hero-link:active::after{
+    transform: translateX(-50%) scaleX(1);
+}
+.landing-main > * {
+    margin-left: auto;
+    margin-right: auto;
+}
+.hero-link { display: inline-block; text-align: center; }
+.subtitle{
+    margin-top: 80px;
+    letter-spacing: 0.6rem;
+    color: #1b1818;
+}
+
+@media (max-width: 768px) {
+    .links-row { gap: 40px; }
+    .hero-title { letter-spacing: 0.4rem; font-size: 2rem; }
+    .subtitle { letter-spacing: 0.4rem; }
 }
 .nav a{
     position: relative;
@@ -72,11 +157,22 @@ body::before {
     justify-content: center;
     align-items: center;
     background-color: transparent; /* allow background image to show through */
+    position: relative;
 }
 .logo p {
     font-family: Logo;
     font-size: 30vh;
     letter-spacing: 10px;
+}
+
+/* Index background image inserted via HTML to ensure full image visibility */
+.bgindex-image {
+    display: block;
+    max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }
 .main {
     

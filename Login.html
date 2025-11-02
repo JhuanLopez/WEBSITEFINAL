@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="Page/CSS/LoginSheet.css">
     <link rel="stylesheet" href="Page/CSS/styles.css">
     <script defer src="Page/JS/env.local.js"></script>
+    <script defer src="Page/JS/notifications.js"></script>
     <script defer src="Page/JS/firebase-init.js"></script>
     <script defer src="Page/JS/Login.js"></script>
 </head>
@@ -16,8 +17,15 @@
         <nav class="nav">
       
         </nav>
+        <button class="notify-indicator" aria-label="Notifications" onclick="notifyToggle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z" fill="#111"/>
+                <path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 10-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z" fill="#111"/>
+            </svg>
+            <span class="dot" aria-hidden="true"></span>
+        </button>
     </header>
-
+    <div class="notification-container" id="notificationContainer"></div>
     <div class="body">
         <!-- <div class="Header">
             <p class="top">PERLAS:</p>
@@ -54,7 +62,6 @@
                 <span class="loading-spinner" style="display: none;">⟳</span>
             </button>
         </form>
-        <div id="notificationContainer"></div>
         <div class="Sign">
             <br>
             <a href="Signup.html" class="Link">Create an Account.</a>
@@ -62,18 +69,7 @@
     </div>
     </div>
     <footer style="text-align:center; font-weight:300; font-size:12px; width:100%; background-color:#000; color:#fff; padding:10px 0; margin-top:32px;">
-            All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1
+           <div style="text-align: center; font-weight: lighter; font-size: 10px; width: 100%; background-color: black; color: white;">All rights reserved. © 2025 Perlas: Angeler's Journey Dev Team  </div>
         </footer>
-    <div id="firebaseError" style="display:none;color:red;text-align:center;margin-top:10px;">Firebase failed to initialize. Please check your configuration.</div>
-    <script>
-    // Simple check for Firebase initialization
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            if (!(window.firebase && firebase.auth && firebase.database)) {
-                document.getElementById('firebaseError').style.display = 'block';
-            }
-        }, 1000);
-    });
-    </script>
 </body>
 </html>

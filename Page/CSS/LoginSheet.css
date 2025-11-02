@@ -8,8 +8,10 @@
 
 /* Full Screen Background */
 body {
-    background: url('templates/Water.png') no-repeat center center fixed;
-    background-size: cover;
+    /* Use page-specific full-screen background image for login */
+    background: url('../images/LogInBG.png') no-repeat center center fixed;
+    background-size: cover; /* fill the viewport */
+    background-color: #0b0b0b; /* dark fallback */
     min-height: 100vh;
     position: relative;
 }
@@ -23,6 +25,22 @@ body::before {
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     z-index: -1;
+}
+
+/* Signup page specific background (uses Sign-InBG image) */
+body.signup-page {
+    background: url('../images/Sign-InBG.png') no-repeat center center fixed;
+    background-size: cover;
+    background-color: #0b0b0b; /* dark fallback */
+}
+
+body.signup-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(247,247,245,0.25);
+    z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes fadeIn {
@@ -43,6 +61,7 @@ body::before {
     justify-content: space-between;
     z-index: 99;
     background: transparent; /* remove translucent holder */
+    -webkit-backdrop-filter: none;
     backdrop-filter: none;
     border-bottom: none;
 }
@@ -119,6 +138,7 @@ body::before {
     padding: 30px;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -181,6 +201,8 @@ input[type="text"], input[type="password"] {
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
     text-decoration: none;
 }
 
@@ -534,6 +556,7 @@ input[type="text"].success, input[type="password"].success {
 
 .checkbox-container label {
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     transition: color 0.3s ease;
 }

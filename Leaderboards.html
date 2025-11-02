@@ -1,176 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboards - Perlas</title>
+    <link rel="stylesheet" href="Page/CSS/maincontent.css">
+    <link rel="stylesheet" href="Page/CSS/styles.css">
+    <link rel="stylesheet" href="Page/Icons/all.min.css">
+    <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
     <style>
-        /* Add/override styles for leaderboard table */
+        /* Page background uses LeadBG.png - image lives in Page/images/ */
         body {
-            background: url('Page/CSS/templates/Water.png') no-repeat center center fixed;
+            background: url('Page/images/LeadBG.png') no-repeat center top;
             background-size: cover;
+            background-color: #f7f7f5; /* fallback/off-white */
+            color: #1b1818;
             min-height: 100vh;
-            position: relative;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
+
         .main-content {
-            margin-left: 260px;
-            padding: 40px 20px 20px 20px;
-            min-height: 100vh;
+            /* center the inner container so the table sits in the middle */
+            max-width: 980px;
+            margin: 50px auto; /* top/bottom space, centers horizontally */
+            padding: 24px 20px;
+            box-sizing: border-box;
         }
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-        }
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 16px 12px;
-            text-align: center;
-        }
-        .leaderboard-table th {
-            background: #e0f7fa;
-            color: #006064;
-            font-weight: 600;
-        }
-        .leaderboard-table tr:nth-child(even) {
-            background: #f1f8fa;
-        }
-        .leaderboard-table tr:nth-child(odd) {
-            background: #fff;
-        }
+
         .leaderboards-title {
-            font-size: 2rem;
+            text-align: center;
+            font-size: 1.25rem;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            font-weight: 700;
         }
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-        }
+
+        /* Simplified two-column leaderboard to match mockup */
         .leaderboard-table {
+            width: 720px;
+            max-width: calc(100% - 40px);
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: transparent;
+            border: 6px solid #9fb0d0; /* outer frame color similar to mockup */
+        }
+
+        .leaderboard-table thead th {
+            padding: 18px 12px;
+            text-align: center;
+            font-weight: 700;
+            background: transparent;
+            color: #1b1818;
             font-size: 1rem;
         }
-        .leaderboard-table th, .leaderboard-table td {
-            min-width: 90px;
+
+        .leaderboard-table tbody td {
+            padding: 22px 12px; /* give rows plenty of vertical space */
+            text-align: center;
+            background: rgba(255,255,255,0.85);
+            color: #1b1818;
+            font-size: 1rem;
         }
-        .leaderboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
+
+        /* horizontal separators between rows */
+        .leaderboard-table tbody tr + tr td {
+            border-top: 4px solid #9fb0d0;
         }
-        .leaderboard-header h1 {
-            margin: 0;
-            font-size: 2rem;
+
+        /* vertical divider between the two columns */
+        .leaderboard-table td + td {
+            border-left: 4px solid #9fb0d0;
         }
-        .game-name {
-            font-size: 1.2rem;
-            color: #009dc4;
-            font-weight: bold;
-            margin-left: 12px;
+
+        /* empty-row helper to mimic the visual spacing in the mockup */
+        .empty-row td {
+            height: 64px;
+            padding: 0;
         }
-        @media (max-width: 700px) {
-            .leaderboard-table th, .leaderboard-table td {
-                padding: 8px 4px;
-                font-size: 0.95rem;
-                min-width: 60px;
-            }
-            .leaderboard-header h1 {
-                font-size: 1.2rem;
-            }
-            .game-name {
-                font-size: 1rem;
-            }
+
+        @media (max-width: 800px) {
+            .leaderboard-table { width: 100%; }
+            .leaderboard-table tbody td { padding: 14px 8px; }
+            .main-content { margin: 30px 12px; }
         }
-        @media (max-width: 500px) {
-            .leaderboard-table th, .leaderboard-table td {
-                padding: 6px 2px;
-                font-size: 0.85rem;
-                min-width: 40px;
-            }
-            .leaderboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .game-name {
-                margin-left: 0;
-                margin-top: 6px;
-            }
+        .footer p {
+            text-align: center;
+            color: rgb(15, 15, 15);
+            margin: 24px 0 40px;
         }
-            .footer-text {
-                text-align: center;
-                color: rgb(15, 15, 15);
-                margin: 0;
-                font-size: 1rem;
-            }
     </style>
-    <!-- ...existing code... -->
 </head>
 <body>
+   
     <div class="main-content">
-        <div class="leaderboard-header">
-            <h1 class="leaderboards-title">Leaderboards</h1>
-            <div class="game-name">Perlas Game</div>
-        </div>
-        <div class="table-responsive">
-            <table class="leaderboard-table" id="leaderboardTable">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Total Fish</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboardBody">
-                </tbody>
-            </table>
-        </div>
+        <h2 class="leaderboards-title">ANGLER's<br>LEADERBOARD</h2>
+
+        <table class="leaderboard-table" aria-label="Angler's leaderboard">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Total caught</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- sample rows; your existing JS can populate rows instead -->
+                <tr>
+                    <td>FishMaster</td>
+                    <td>120</td>
+                </tr>
+                <tr class="empty-row">
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>OceanQueen</td>
+                    <td>110</td>
+                </tr>
+                <tr class="empty-row">
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>LegendaryLure</td>
+                    <td>100</td>
+                </tr>
+                <tr class="empty-row">
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <footer class="footer">
-    <p class="footer-text">PERLAS 2024</p>
-    </footer>
-    <!-- Firebase leaderboard script -->
-    <script defer src="Page/JS/firebase-init.js"></script>
-    <script>
-    // Use loadFirebase() to ensure Firebase is loaded before accessing database
-    document.addEventListener('DOMContentLoaded', function() {
-        loadFirebase().then(function(firebase) {
-            const leaderboardBody = document.getElementById('leaderboardBody');
-            leaderboardBody.innerHTML = '';
-            firebase.database().ref('users').once('value').then(function(usersSnap) {
-                const users = usersSnap.val() || {};
-                const leaderboard = [];
-                const userEntries = Object.entries(users);
-                let userFetches = userEntries.map(([uid, user]) => {
-                    return firebase.database().ref('users/' + uid + '/caughtFish').once('value').then(function(fishSnap) {
-                        const caughtFish = fishSnap && fishSnap.val() ? Object.values(fishSnap.val()) : [];
-                        let total = caughtFish.length;
-                        leaderboard.push({
-                            email: user.email ? user.email : 'Unknown',
-                            total
-                        });
-                    });
-                });
-                Promise.all(userFetches).then(function() {
-                    leaderboard.sort((a, b) => b.total - a.total);
-                    leaderboardBody.innerHTML = '';
-                    leaderboard.forEach(function(row, i) {
-                        leaderboardBody.innerHTML += `<tr>
-                            <td>${row.email}</td>
-                            <td>${row.total}</td>
-                        </tr>`;
-                    });
-                    if (leaderboard.length === 0) leaderboardBody.innerHTML = '<tr><td colspan="3">No data found.</td></tr>';
-                });
-            }).catch(function(err) {
-                leaderboardBody.innerHTML = '<tr><td colspan="3">Failed to load leaderboard.</td></tr>';
-            });
-        });
-    });
-    </script>
+</body>
+</html>
