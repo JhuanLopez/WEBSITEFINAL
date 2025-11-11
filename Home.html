@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
     <link rel="stylesheet" href="Page/CSS/maincontent.css">
     <link rel="stylesheet" href="Page/CSS/styles.css">
+    <!-- Font Awesome: prefer CDN for fonts; fall back to local files if offline -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="Page/Icons/all.min.css">
     <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
     <script defer src="Page/JS/Animation.js"></script>
@@ -16,6 +18,13 @@
                         <a href="lessonsHome.html">Store</a>
                         <a href="Connect.html">Connect</a>
                         <a href="AboutUs.html">Devs</a>
+                        <div class="coin-indicator" id="coinIndicator">
+                            <button class="coin-button" id="coinTopupBtn" title="AquaGem">
+                                <span class="pearl">� pearl</span>
+                                <span id="coinTotal">0</span>
+                                <span class="topup">+ </span>
+                            </button>
+                        </div>
                         <div class="account-menu" id="accountMenu">
                             <button class="account-button" id="accountToggle" aria-haspopup="true" aria-expanded="false" aria-controls="accountPanel" title="Account">
                                 <i class="fa-regular fa-user" aria-hidden="true"></i>
@@ -194,6 +203,7 @@
     }
 
     // Indicator circles
+    
     indicators.innerHTML = '';
     galleryData.forEach((_, i) => {
         const dot = document.createElement('span');
@@ -235,6 +245,7 @@
     });
     </script>
     <script src="Page/JS/account.js" defer></script>
+    <script src="Page/JS/coins.js" defer></script>
     <script src="Page/JS/gallery.js" defer></script>
     </body>
     

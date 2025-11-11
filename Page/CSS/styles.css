@@ -12,14 +12,10 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
-    color: #1b1818; /* dark text for readability on off-white */
+   
 }
 
 /* White glow utility and default glow for prominent elements */
-.glow-white {
-    color: #1b1818 !important;
-    text-shadow: none;
-}
 
 /* Apply glow to common prominent elements site-wide (override as needed) */
 .top .logo,
@@ -29,13 +25,11 @@ h1, h2, h3,
 .btn, .button,
 .Link,
 .footer-col h4 {
-    color: #1b1818;
     text-shadow: none;
 }
 
 /* For paragraphs and body text use a subtler glow to keep readability */
 p, body, li, label {
-    color: #1b1818;
     text-shadow: none;
 }
 

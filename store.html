@@ -4,34 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Store</title>
+    <link rel="stylesheet" href="Page/CSS/maincontent.css">
     <link rel="stylesheet" href="Page/CSS/lessonsHome.css">
     <link rel="stylesheet" href="Page/CSS/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="Page/JS/Animation.js"></script>
     <style>
     body {
-        background: linear-gradient(120deg, #a7e6ff 0%, #38d1c1 100%);
+        /* Background set to Page/images/7.png per user request */
+        background-image: url('Page/images/7.png');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
     }
     .store-header {
-        margin-top: 120px;
+        margin-top: 92px; /* leave space for fixed header */
         text-align: center;
         color: #023047;
-        font-size: 2.5rem;
+        font-size: clamp(1.4rem, 2.4vw, 2.5rem);
         font-weight: 700;
         letter-spacing: 2px;
+        padding: 8px 16px;
     }
+    /* Responsive grid for skin cards */
     .skins-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 32px;
-        padding: 40px 10px 20px 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: clamp(12px, 2vw, 32px);
+        padding: clamp(20px, 4vw, 40px) 10px 40px 10px;
         max-width: 1200px;
         margin: 0 auto;
+        align-items: start;
     }
     .skin-card {
-        width: 220px;
-        height: 380px;
+        width: 100%;
+        max-width: 360px;
+        aspect-ratio: 11 / 18;
         perspective: 1200px;
-        background: none;
+        background: transparent;
+        margin: 0 auto;
+        display: block;
     }
     .skin-card-inner {
         position: relative;
@@ -46,8 +59,7 @@
     }
     .skin-card-front, .skin-card-back {
         position: absolute;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         border-radius: 18px;
         box-shadow: 0 6px 24px rgba(2,48,71,0.13);
         backface-visibility: hidden;
@@ -57,103 +69,71 @@
         justify-content: center;
         background: #fff;
         overflow: hidden;
+        padding: clamp(12px, 1.8vw, 24px);
     }
-    .skin-card-front {
-        z-index: 2;
-        padding: 24px 10px 10px 10px;
-    }
+    .skin-card-front { z-index: 2; }
     .skin-card-front img {
-        width: 120px;
-        height: 220px;
+        width: min(62%, 220px);
+        height: auto;
         object-fit: contain;
-        margin-bottom: 18px;
+        margin-bottom: clamp(12px, 2.2vw, 18px);
         border-radius: 10px;
         background: #e0f7fa;
         box-shadow: 0 2px 8px rgba(2,48,71,0.07);
     }
-    .skin-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #026873;
-        margin-bottom: 8px;
-    }
-    .skin-price {
-        color: #009dc4;
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
-    .skin-card-back {
-        transform: rotateY(180deg);
-        background: #e0f7fa;
-        color: #023047;
-        padding: 24px 18px;
-        text-align: center;
-        font-size: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .buy-btn {
-        margin-top: 18px;
-        padding: 10px 28px;
-        background: #009dc4;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-    .buy-btn:hover {
-        background: #026873;
-    }
+    .skin-title { font-size: clamp(1rem, 1.8vw, 1.25rem); font-weight: 600; color: #026873; margin-bottom: 6px; }
+    .skin-price { color: #009dc4; font-weight: 700; font-size: clamp(.95rem, 1.6vw, 1.1rem); }
+    .skin-card-back { transform: rotateY(180deg); background: #e0f7fa; color: #023047; text-align: center; }
+    .buy-btn { margin-top: 12px; padding: 10px 20px; background: #009dc4; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .18s ease, transform .12s ease; }
+    .buy-btn:hover { background: #026873; transform: translateY(-2px); }
+
+    /* Smaller screens tweaks */
     @media (max-width: 900px) {
-        .skins-container {
-            gap: 18px;
-            padding: 20px 2vw;
-        }
-        .skin-card {
-            width: 160px;
-            height: 300px;
-        }
-        .skin-card-front img {
-            width: 80px;
-            height: 140px;
-        }
+        .skins-container { gap: 18px; padding: 18px 3vw; }
+        .skin-card { max-width: 320px; }
     }
     @media (max-width: 600px) {
-        .store-header {
-            font-size: 1.3rem;
-        }
-        .skins-container {
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-        }
-        .skin-card {
-            width: 90vw;
-            max-width: 320px;
-            height: 220px;
-        }
-        .skin-card-front img {
-            width: 60px;
-            height: 90px;
-        }
+        .store-header { font-size: 1.15rem; margin-top: 78px; }
+        .skins-container { grid-template-columns: 1fr; padding: 12px 4vw; gap: 14px; }
+        .skin-card { max-width: 92vw; aspect-ratio: auto; height: auto; }
+        .skin-card-front img { width: 48%; }
+        .buy-btn { width: 100%; }
     }
     </style>
 </head>
 <body>
-    <header class="top">
-    <a href="index.html" class="logo">PERLAS</a>
-        <nav class="nav">
-            <a href="index.html">Home</a>
-            <a href="Connect.html">Connect</a>
-            <a href="AboutUs.html">About</a>
-        </nav>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="site-title">PERLAS: Angler's Journey</a>
+            <nav class="header-nav" aria-label="Main navigation">
+                <a href="Home.html">Home</a>
+                <a href="Connect.html">Connect</a>
+                <a href="AboutUs.html">Devs</a>
+                <div class="coin-indicator" id="coinIndicator">
+                    <button class="coin-button" id="coinTopupBtn" title="AquaGem">
+                        <span class="pearl">� pearl</span>
+                        <span id="coinTotal">0</span>
+                        <span class="topup">+ </span>
+                    </button>
+                </div>
+                <div class="account-menu" id="accountMenu">
+                    <button class="account-button" id="accountToggle" aria-haspopup="true" aria-expanded="false" aria-controls="accountPanel" title="Account">
+                        <i class="fa-regular fa-user" aria-hidden="true"></i>
+                        <span class="visually-hidden">Account</span>
+                    </button>
+                    <div class="account-panel" id="accountPanel" role="menu" aria-hidden="true">
+                        <div class="account-panel__user" id="accountPanelUser">Signed in</div>
+                        <div class="account-panel__actions">
+                            <button type="button" class="account-action" id="manageAccountBtn">Manage account</button>
+                            <button type="button" class="account-action danger" id="signOutBtn">Sign out</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
-        <div class="store-header">In-Game Skin Store</div>
+        <div class="store-header">Seasonal Rods</div>
+        <h1>Refresh every month</h1>
         <div class="skins-container">
             <div class="skin-card" tabindex="0">
                 <div class="skin-card-inner">
@@ -200,8 +180,7 @@
             <!-- Add more skin cards as needed -->
         </div>
         
-        <footer class="footer">
-            <div class="site-footer-note">All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1</div>
-        </footer>
+    <script src="Page/JS/account.js" defer></script>
+    <script src="Page/JS/coins.js" defer></script>
 </body>
 </html>
