@@ -23,54 +23,49 @@
 
 }
 .sidebar{
+    /* Render sidebar as a top horizontal header across the site */
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 80px;
-    background-color: #111111;
-    padding: 0.4rem 0.8rem;
-    transition: all 0.5s ease;
-}
-.sidebar.active ~ .main-content{
-    left: 250px;
-    width: calc(100% - 250px);
-}
-.sidebar.active{
-    width: 250px;
-    height: 100%;
-}
-.sidebar #btn{
-    position: absolute;
-    color: rgb(255, 255, 255);
-    top: .4rem;
-    left: 50%;
-    font-size: 1.2rem;
-    line-height:50px;
-    transform: translateX(-50%);
-    cursor: pointer;
-}
-.sidebar.active #btn{
-    left: 95%;
-}
-.sidebar .Disc{
-    opacity: 0;
-}
-.sidebar.active .Disc{
-    opacity: 1;
-}
-.sidebar .top .logo{
-    color: rgb(255, 255, 255);
-    display: flex;
-    height: 50px;
+    right: 0;
+    height: 64px;
     width: 100%;
+    background-color: transparent; /* keep page background visible */
+    display: flex;
     align-items: center;
-    opacity: 0;
-    transition: all 0.5s ease;
+    padding: 0 20px;
+    z-index: 999;
 }
-.sidebar.active .top .logo{
-    opacity: 1;
+.sidebar .top{
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
+.sidebar .logo{
+    font-weight: 700;
+    color: #111;
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin-left: 8px;
+}
+.sidebar ul{
+    margin-left: auto;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+.sidebar ul li{
+    margin: 0;
+    height: auto;
+}
+.sidebar ul li a{
+    color: #111;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 6px 8px;
+}
+.sidebar ul li a:hover{ color: #0077a8; }
+.sidebar #btn{ display: none; }
 .top .logo{ 
     font-size: 2.5rem;
     margin-top: 50px;
@@ -145,13 +140,14 @@ background-color: rgb(164, 168, 165);
     position: relative;
     min-height: 100vh;
     top: 0;
-    left: 80px;
+    left: 0;
     transition: all 0.5s ease;
-    width: calc(100% - 80px); 
+    width: 100%;
+    padding-top: 84px; /* make room for the top header */
     background-image: url(templates/main.png);
     background-size: contain;
     background-repeat: no-repeat;
-}         
+}
 .Topper h1{
     font-size: 50px;
     font-family: Pixels;
@@ -224,9 +220,9 @@ ul{
 .footer{
     z-index: inherit;
     position: relative;
-	background-color: #5d5f66;
+    background-color: #5d5f66;
     padding: 7px 0;
-    left: 80px;
+    left: 0;
     width: 100%;
     transition: all 0.5s ease;
 }
