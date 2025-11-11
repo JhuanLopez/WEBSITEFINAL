@@ -426,6 +426,30 @@ background-color: rgb(164, 168, 165);
     min-height: var(--hero-min-height);
     padding: 60px 20px;
 }
+
+/* Hero video styling moved from inline to CSS; default size 700x600 but responsive */
+#heroVideo {
+    width: 700px;
+    height: 600px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(2,48,71,0.12);
+    display: block;
+}
+
+#heroVideo img { /* fallback image inside video tag */
+    display: block;
+    width: 700px;
+    height: 600px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+    #heroVideo, #heroVideo img { width: 100%; height: auto; }
+}
 .container2 .page-title{
     font-family: Logo;
     letter-spacing: 12px;
