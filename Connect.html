@@ -49,56 +49,6 @@
                     <button type="reset" class="Buttons">Reset</button>
                 </div>
                 <div id="formStatus" aria-live="polite" class="form-status" hidden></div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('contactForm');
-        const name = document.getElementById('name');
-        const email = document.getElementById('email');
-        const message = document.getElementById('message');
-        const status = document.getElementById('formStatus');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Simple validation
-            let valid = true;
-            if (!name.value.trim()) {
-                name.style.borderColor = 'red';
-                valid = false;
-            } else {
-                name.style.borderColor = '#004d6d';
-            }
-            if (!email.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value)) {
-                email.style.borderColor = 'red';
-                valid = false;
-            } else {
-                email.style.borderColor = '#007a99';
-            }
-            if (!message.value.trim()) {
-                message.style.borderColor = 'red';
-                valid = false;
-            } else {
-                message.style.borderColor = '';
-            }
-            if (!valid) {
-                status.textContent = 'Please fill in all fields correctly.';
-                status.style.color = 'red';
-                status.hidden = false;
-                return;
-            }
-            // Simulate successful send
-            status.textContent = 'Thank you for your message! We will get back to you soon.';
-            status.style.color = 'green';
-            status.hidden = false;
-            form.reset();
-        });
-        form.addEventListener('reset', function() {
-            name.style.borderColor = '#004d6d';
-            email.style.borderColor = '#007a99';
-            message.style.borderColor = '';
-            status.hidden = true;
-        });
-    });
-    </script>
             </div>
         </form>
     </div>
@@ -106,31 +56,71 @@
 <div class="site-footer-note">All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1</div>
 </div>
     <script>
-    // Initialize EmailJS (replace with your user ID)
+    // Contact form: open Gmail compose (user's account) or fallback to mailto:
     (function(){
-        emailjs.init('YOUR_EMAILJS_USER_ID'); // <-- Replace with your EmailJS user ID
-    })();
+    const RECIPIENT = 'lopez.johnpatrick@ncst.edu.ph'; // recipient for contact form
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('contactForm');
-        const status = document.getElementById('formStatus');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            status.hidden = true;
-            // Replace with your EmailJS service ID and template ID
-            emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form)
-                .then(function() {
-                    status.textContent = 'Thank you for your message! We will get back to you soon.';
-                    status.style.color = 'green';
-                    status.hidden = false;
+        function showStatus(msg, ok=true){
+            const status = document.getElementById('formStatus');
+            status.textContent = msg;
+            status.style.color = ok ? 'green' : 'red';
+            status.hidden = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const nameEl = document.getElementById('name');
+            const emailEl = document.getElementById('email');
+            const messageEl = document.getElementById('message');
+            const status = document.getElementById('formStatus');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                status.hidden = true;
+
+                const name = (nameEl.value || '').trim();
+                const fromEmail = (emailEl.value || '').trim();
+                const message = (messageEl.value || '').trim();
+
+                // basic validation
+                if (!name) { nameEl.style.borderColor = 'red'; showStatus('Please enter your name.', false); return; }
+                nameEl.style.borderColor = '';
+                if (!fromEmail || !/^\S+@\S+\.\S+$/.test(fromEmail)) { emailEl.style.borderColor = 'red'; showStatus('Please enter a valid email address.', false); return; }
+                emailEl.style.borderColor = '';
+                if (!message) { messageEl.style.borderColor = 'red'; showStatus('Please enter a message.', false); return; }
+                messageEl.style.borderColor = '';
+
+                const subject = `Perlas Contact: ${name}`;
+                const body = `From: ${name} <${fromEmail}>\n\n${message}\n\n--\nSent from Perlas website`;
+
+                // Prefer opening Gmail compose (so the user sends using their Gmail account in the browser)
+                const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+                    '&to=' + encodeURIComponent(RECIPIENT) +
+                    '&su=' + encodeURIComponent(subject) +
+                    '&body=' + encodeURIComponent(body);
+
+                const newWin = window.open(gmailUrl, '_blank');
+                if (!newWin) {
+                    // popup blocked — fallback to mailto:
+                    const mailto = 'mailto:' + encodeURIComponent(RECIPIENT) +
+                        '?subject=' + encodeURIComponent(subject) +
+                        '&body=' + encodeURIComponent(body);
+                    window.location.href = mailto;
+                    showStatus('Opened your mail application. Complete and send the message to deliver it using your account.');
+                } else {
+                    showStatus('A compose window was opened in a new tab. Complete and send the email using your account.');
                     form.reset();
-                }, function(error) {
-                    status.textContent = 'Failed to send message. Please try again later.';
-                    status.style.color = 'red';
-                    status.hidden = false;
-                });
+                }
+            });
+
+            form.addEventListener('reset', function(){
+                nameEl.style.borderColor = '';
+                emailEl.style.borderColor = '';
+                messageEl.style.borderColor = '';
+                status.hidden = true;
+            });
         });
-    });
+    })();
     </script>
     </body>
     

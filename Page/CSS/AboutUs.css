@@ -201,12 +201,13 @@
           margin: auto;
       }
 
-/* Placeholder front backgrounds for each card (use existing template images) */
-.front-1 { background-image: url(../templates/Lo.jpg); }
-.front-2 { background-image: url(../templates/jes.jpg); }
-.front-3 { background-image: url(../templates/main.png); }
-.front-4 { background-image: url(../templates/Software.jpg); }
-.front-5 { background-image: url(../templates/Hardware.jpg); }
+/* Placeholder front backgrounds for each card (use existing template images).
+    Updated: use the team images from Page/images. First card uses Pat.png as requested. */
+.front-1 { background-image: url(../images/Pat.png); }
+.front-2 { background-image: url(../images/Julius.png); }
+.front-3 { background-image: url(../images/Nyah.png); }
+.front-4 { background-image: url(../images/Chester.png); }
+.front-5 { background-image: url(../images/Shimada.png); }
 
 /* Responsive breakpoints */
             @media (max-width: 1200px) {

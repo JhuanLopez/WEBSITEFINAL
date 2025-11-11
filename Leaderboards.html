@@ -92,6 +92,37 @@
 </head>
 <body>
    
+            <header class="site-header">
+                <div class="header-inner">
+                    <a href="index.html" class="site-title">PERLAS: Angler's Journey</a>
+                    <nav class="header-nav" aria-label="Main navigation">
+                        <a href="lessonsHome.html">Store</a>
+                        <a href="Connect.html">Connect</a>
+                        <a href="AboutUs.html">Devs</a>
+                        <div class="coin-indicator" id="coinIndicator">
+                            <button class="coin-button" id="coinTopupBtn" title="AquaGem">
+                                <span class="pearl">� pearl</span>
+                                <span id="coinTotal">0</span>
+                                <span class="topup">+ </span>
+                            </button>
+                        </div>
+                        <div class="account-menu" id="accountMenu">
+                            <button class="account-button" id="accountToggle" aria-haspopup="true" aria-expanded="false" aria-controls="accountPanel" title="Account">
+                                <i class="fa-regular fa-user" aria-hidden="true"></i>
+                                <span class="visually-hidden">Account</span>
+                            </button>
+                            <div class="account-panel" id="accountPanel" role="menu" aria-hidden="true">
+                                <div class="account-panel__user" id="accountPanelUser">Signed in</div>
+                                <div class="account-panel__actions">
+                                    <button type="button" class="account-action" id="manageAccountBtn">Manage account</button>
+                                    <button type="button" class="account-action danger" id="signOutBtn">Sign out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
     <div class="main-content">
         <h2 class="leaderboards-title">ANGLER's<br>LEADERBOARD</h2>
 
@@ -131,5 +162,11 @@
             </tbody>
         </table>
     </div>
+</div>
+    <!-- Page scripts: account + coins UI, then Firebase and leaderboard population -->
+    <script src="Page/JS/account.js" defer></script>
+    <script src="Page/JS/coins.js" defer></script>
+    <script defer src="Page/JS/firebase-init.js"></script>
+    <script src="Page/JS/leaderboard.js" defer></script>
 </body>
 </html>
