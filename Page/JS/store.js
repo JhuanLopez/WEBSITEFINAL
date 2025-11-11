@@ -59,12 +59,9 @@
             return modal;
         }
 
-        // Payment methods (deduplicated when rendering)
+        // Payment: AquaGems only. Use a small image to indicate AquaGem payment.
         const PAYMENT_METHODS = [
-            { id: 'gcash', name: 'GCash' },
-            { id: 'card', name: 'Card' },
-            { id: 'paymaya', name: 'PayMaya' },
-            // duplicate intentionally removed by Set when rendering if present multiple times
+            { id: 'aquagem', name: 'AquaGems', img: 'Page/images/topup1.svg' }
         ];
 
         // handle buy click
@@ -100,52 +97,94 @@
                 const cancelBtn = modal.querySelector('.btn-cancel');
                 const confirmBtn = modal.querySelector('.btn-confirm');
 
-                // render payment methods (deduped)
-                const seen = new Set();
+
+                // render a single AquaGem payment block (temporary image + hint)
                 PAYMENT_METHODS.forEach(m => {
-                    if (seen.has(m.id)) return; seen.add(m.id);
-                    const btnPm = document.createElement('button');
-                    btnPm.type = 'button';
-                    btnPm.className = 'pm-btn';
-                    btnPm.style.padding = '8px 10px';
-                    btnPm.style.borderRadius = '8px';
-                    btnPm.style.border = '1px solid rgba(0,0,0,0.06)';
-                    btnPm.textContent = m.name;
-                    btnPm.dataset.pm = m.id;
-                    pmListEl.appendChild(btnPm);
+                    const wrapper = document.createElement('div');
+                    wrapper.style.display = 'flex';
+                    wrapper.style.alignItems = 'center';
+                    wrapper.style.gap = '10px';
+                    if (m.img) {
+                        const im = document.createElement('img');
+                        im.src = m.img;
+                        im.alt = m.name;
+                        im.style.width = '56px';
+                        im.style.height = '36px';
+                        im.style.objectFit = 'contain';
+                        wrapper.appendChild(im);
+                    }
+                    const txt = document.createElement('div');
+                    txt.innerHTML = `<strong>${m.name}</strong><div style="font-size:0.9rem;color:#666">Pay using your AquaGem balance</div>`;
+                    wrapper.appendChild(txt);
+                    pmListEl.appendChild(wrapper);
                 });
 
-                summaryEl.textContent = `${title} — ${price} Pearls`;
+                summaryEl.textContent = `${title} — ${price} AquaGems`;
 
                 // cancel
                 cancelBtn.addEventListener('click', () => { modal.remove(); });
 
-                // confirm
+                // confirm: perform an atomic transaction to deduct AquaGems, then write inventory
                 confirmBtn.addEventListener('click', async () => {
                     confirmBtn.disabled = true;
                     confirmBtn.textContent = 'Processing...';
 
                     try{
-                        // Write to user's inventory (overwrite if exists)
-                        const userInvRef = firebase.database().ref('users/' + uid + '/inventory/' + itemId);
-                        await userInvRef.set({ id: itemId, title, price, img, boughtAt: Date.now(), sold: true });
+                        const balanceRef = firebase.database().ref('users/' + uid + '/aquaGem');
+                        // transaction will return undefined (abort) if insufficient
+                        balanceRef.transaction(current => {
+                            if (current === null || typeof current === 'undefined') current = 0;
+                            if (current >= price) return current - price;
+                            return; // abort transaction => insufficient funds
+                        }, async (err, committed, snapshot) => {
+                            if (err) {
+                                console.error('Transaction error', err);
+                                alert('Error processing payment. Please try again.');
+                                confirmBtn.disabled = false;
+                                confirmBtn.textContent = 'Confirm';
+                                return;
+                            }
+                            if (!committed) {
+                                // insufficient funds
+                                alert('Insufficient AquaGem balance. Please top up and try again.');
+                                confirmBtn.disabled = false;
+                                confirmBtn.textContent = 'Confirm';
+                                return;
+                            }
 
-                        // Mark global item as owned by this user
-                        const itemOwnersRef = firebase.database().ref('items/' + itemId + '/owners/' + uid);
-                        await itemOwnersRef.set({ boughtAt: Date.now() });
+                            // committed: proceed to record purchase
+                            try{
+                                // Write to user's inventory (overwrite if exists)
+                                const userInvRef = firebase.database().ref('users/' + uid + '/inventory/' + itemId);
+                                await userInvRef.set({ id: itemId, title, price, img, boughtAt: Date.now(), sold: true });
 
-                        // Optional: record a purchase log for audit
-                        const logRef = firebase.database().ref('purchases/' + uid + '/' + Date.now());
-                        await logRef.set({ itemId, title, price });
+                                // Mark global item as owned by this user
+                                const itemOwnersRef = firebase.database().ref('items/' + itemId + '/owners/' + uid);
+                                await itemOwnersRef.set({ boughtAt: Date.now() });
 
-                        // Update UI
-                        const buyBtn = card.querySelector('.buy-btn');
-                        if (buyBtn){ buyBtn.textContent = 'Owned'; buyBtn.disabled = true; buyBtn.classList.add('owned'); }
+                                // Optional: record a purchase log for audit
+                                const logRef = firebase.database().ref('purchases/' + uid + '/' + Date.now());
+                                await logRef.set({ itemId, title, price });
 
-                        alert('Purchase recorded. The item is now in your inventory.');
-                        modal.remove();
+                                // Update UI to show new balance and owned state
+                                const newBal = snapshot.val();
+                                const coinEl = document.getElementById('coinTotal');
+                                if (coinEl) coinEl.textContent = String(newBal);
+
+                                const buyBtn = card.querySelector('.buy-btn');
+                                if (buyBtn){ buyBtn.textContent = 'Owned'; buyBtn.disabled = true; buyBtn.classList.add('owned'); }
+
+                                alert('Purchase successful. The item is now in your inventory.');
+                                modal.remove();
+                            }catch(writeErr){
+                                console.error('Failed to write purchase after successful transaction', writeErr);
+                                alert('Purchase processed but recording failed. Contact support.');
+                                confirmBtn.disabled = false;
+                                confirmBtn.textContent = 'Confirm';
+                            }
+                        });
                     }catch(err){
-                        console.error('Purchase failed', err);
+                        console.error('Purchase flow error', err);
                         alert('Failed to complete purchase. See console for details.');
                         confirmBtn.disabled = false;
                         confirmBtn.textContent = 'Confirm';
