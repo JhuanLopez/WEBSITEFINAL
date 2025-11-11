@@ -29,7 +29,7 @@ class LoginManager {
         // validate email as user types
         if (this.emailField) {
             this.emailField.addEventListener('input', () => {
-                this.validateEmail(this.emailField.value);
+                this.validateIdentifier(this.emailField.value);
             });
         }
 
@@ -64,8 +64,25 @@ class LoginManager {
 
     validateEmail(email) {
         const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    this.updateFieldValidation(this.emailField, this.emailError, isValid, 'Please enter a valid email address');
+        this.updateFieldValidation(this.emailField, this.emailError, isValid, 'Please enter a valid email address');
         return isValid;
+    }
+
+    validateIdentifier(identifier) {
+        // Accept either email or username
+        if (!identifier || identifier.trim() === '') {
+            this.emailField.classList.remove('error','success');
+            this.hideError(this.emailError);
+            return false;
+        }
+        const value = identifier.trim();
+        if (value.indexOf('@') !== -1) {
+            return this.validateEmail(value);
+        }
+        // username rules: 3-20 chars, letters numbers dash underscore
+        const isUsername = /^[a-zA-Z0-9_-]{3,20}$/.test(value);
+        this.updateFieldValidation(this.emailField, this.emailError, isUsername, 'Enter a valid username (3-20 chars) or email');
+        return isUsername;
     }
 
     validatePassword(password) {
@@ -166,14 +183,14 @@ class LoginManager {
     async handleFormSubmit(event) {
         event.preventDefault();
 
-        const email = (this.emailField && this.emailField.value || '').trim();
+        const identifier = (this.emailField && this.emailField.value || '').trim();
         const password = this.passwordField.value.trim();
 
         // Validate all fields
-        const isEmailValid = this.validateEmail(email);
+        const isIdentifierValid = this.validateIdentifier(identifier);
         const isPasswordValid = this.validatePassword(password);
 
-        if (!isEmailValid || !isPasswordValid) {
+        if (!isIdentifierValid || !isPasswordValid) {
             this.showNotification('Please fix the errors above', 'error');
             this.shakeForm();
             return;
@@ -187,7 +204,7 @@ class LoginManager {
             await this.delay(1500);
 
             // Check credentials
-            const result = await this.authenticateUser(email, password);
+            const result = await this.authenticateUser(identifier, password);
             
             if (result.success) {
                 this.showNotification('Login successful! Redirecting...', 'success');
@@ -204,25 +221,51 @@ class LoginManager {
         }
     }
 
-    async authenticateUser(email, password) {
-        // Try Firebase Auth first (email + password)
+    async authenticateUser(identifier, password) {
+        // Try Firebase Auth first
         try {
             if (typeof loadFirebase === 'function') {
                 const firebase = await loadFirebase();
 
-                const userCred = await firebase.auth().signInWithEmailAndPassword(email, password);
-                if (userCred && userCred.user) {
-                    // fetch profile from realtime DB
+                // If identifier looks like an email, sign in directly
+                if (identifier.indexOf('@') !== -1) {
+                    const userCred = await firebase.auth().signInWithEmailAndPassword(identifier, password);
+                    if (userCred && userCred.user) {
+                        try {
+                            const uid = userCred.user.uid;
+                            const snap = await firebase.database().ref('users/' + uid).once('value');
+                            const profile = snap.val() || { email: identifier };
+                            try { sessionStorage.setItem('userProfile', JSON.stringify(profile)); } catch(e){}
+                            return { success: true, message: 'Login successful (Firebase)!', profile };
+                        } catch (dbErr) {
+                            console.warn('Failed to read user profile:', dbErr);
+                            return { success: true, message: 'Login successful (Firebase) - profile not found' };
+                        }
+                    }
+                } else {
+                    // Treat identifier as username: look up user by username in RTDB
                     try {
-                        const uid = userCred.user.uid;
-                        const snap = await firebase.database().ref('users/' + uid).once('value');
-                        const profile = snap.val() || { email };
-                        // store profile in sessionStorage for the session
-                        try { sessionStorage.setItem('userProfile', JSON.stringify(profile)); } catch(e){}
-                        return { success: true, message: 'Login successful (Firebase)!', profile };
-                    } catch (dbErr) {
-                        console.warn('Failed to read user profile:', dbErr);
-                        return { success: true, message: 'Login successful (Firebase) - profile not found' };
+                        const usersRef = firebase.database().ref('users');
+                        const snap = await usersRef.orderByChild('username').equalTo(identifier).once('value');
+                        if (!snap.exists()) {
+                            return { success: false, message: 'Username not found. Please check your username.' };
+                        }
+                        const data = snap.val();
+                        // pick the first matching user
+                        const firstKey = Object.keys(data)[0];
+                        const profile = data[firstKey];
+                        if (!profile || !profile.email) {
+                            return { success: false, message: 'Unable to resolve username to an account.' };
+                        }
+                        // Now attempt sign-in with the resolved email
+                        const userCred = await firebase.auth().signInWithEmailAndPassword(profile.email, password);
+                        if (userCred && userCred.user) {
+                            try { sessionStorage.setItem('userProfile', JSON.stringify(profile)); } catch(e){}
+                            return { success: true, message: 'Login successful (Firebase)!', profile };
+                        }
+                    } catch (uErr) {
+                        console.warn('Username login attempt failed:', uErr);
+                        // Fall through to local fallback below
                     }
                 }
             }
@@ -234,6 +277,7 @@ class LoginManager {
         // Local fallback (insecure) — useful for offline/testing
         const registeredEmail = localStorage.getItem('registeredEmail');
         const registeredPassword = localStorage.getItem('registeredPassword');
+        const registeredUsername = localStorage.getItem('registeredUsername');
 
         if (!registeredEmail || !registeredPassword) {
             return {
@@ -241,10 +285,12 @@ class LoginManager {
                 message: 'No registered user found. Please sign up first.'
             };
         }
-        if (email !== registeredEmail) {
+
+        // Allow identifier to match either stored email or username
+        if (identifier !== registeredEmail && identifier !== registeredUsername) {
             return {
                 success: false,
-                message: 'Email not found. Please check your email.'
+                message: 'Account not found. Please check your username or email.'
             };
         }
 

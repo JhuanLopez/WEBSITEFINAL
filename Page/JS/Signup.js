@@ -7,6 +7,8 @@ class SignupManager {
 
     initElements() {
         this.form = document.getElementById('signupForm');
+        this.usernameField = document.getElementById('username');
+        this.usernameError = document.getElementById('usernameError');
         this.emailField = document.getElementById('email');
         this.passwordField = document.getElementById('password');
         this.confirmPasswordField = document.getElementById('confirmPassword');
@@ -35,6 +37,7 @@ class SignupManager {
 
         // Email-only signup — username field removed from markup
         this.emailField.addEventListener('input', () => this.validateEmail(this.emailField.value));
+    if (this.usernameField) this.usernameField.addEventListener('input', () => this.validateUsername(this.usernameField.value));
         this.passwordField.addEventListener('input', () => this.validatePassword(this.passwordField.value));
         this.confirmPasswordField.addEventListener('input', () => this.validateConfirmPassword(this.confirmPasswordField.value));
 
@@ -45,6 +48,15 @@ class SignupManager {
         // Simple email regex for demonstration
         const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         this.updateFieldValidation(this.emailField, this.emailError, isValid, 'Please enter a valid email address');
+        return isValid;
+    }
+
+    validateUsername(username) {
+        if (!this.usernameField) return true;
+        const trimmed = (username || '').trim();
+        // Allow letters, numbers, underscore, hyphen. 3-20 chars.
+        const isValid = /^[a-zA-Z0-9_-]{3,20}$/.test(trimmed);
+        this.updateFieldValidation(this.usernameField, this.usernameError, isValid, 'Username must be 3-20 chars: letters, numbers, dash or underscore');
         return isValid;
     }
 
@@ -102,15 +114,16 @@ class SignupManager {
     async handleSubmit(event) {
         event.preventDefault();
 
+        const username = this.usernameField ? (this.usernameField.value || '').trim() : '';
         const email = this.emailField.value.trim();
         const password = this.passwordField.value;
         const confirmPassword = this.confirmPasswordField.value;
 
+        const isUsernameValid = this.validateUsername(username);
         const isEmailValid = this.validateEmail(email);
         const isPasswordValid = this.validatePassword(password);
         const isConfirmValid = this.validateConfirmPassword(confirmPassword);
-
-        if (!isEmailValid || !isPasswordValid || !isConfirmValid) {
+        if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmValid) {
             this.showNotification('Please fix the errors above', 'error');
             this.shakeForm();
             return;
@@ -126,12 +139,29 @@ class SignupManager {
             try {
                 const firebase = await loadFirebase();
                 const emailVal = (this.emailField && this.emailField.value || '').trim();
+                const usernameVal = username;
 
                 // Validate again before network calls
                 if (!this.validateEmail(emailVal)) {
                     this.showNotification('Please fix the email above', 'error');
                     this.setLoadingState(false);
                     return;
+                }
+
+                // Check username uniqueness (case-insensitive)
+                if (usernameVal) {
+                    try {
+                        const usersSnap = await firebase.database().ref('users').once('value');
+                        const users = usersSnap.val() || {};
+                        const found = Object.values(users).some(u => u && u.username && u.username.toLowerCase() === usernameVal.toLowerCase());
+                        if (found) {
+                            this.showNotification('That username is already taken. Please choose another.', 'error');
+                            this.setLoadingState(false);
+                            return;
+                        }
+                    } catch (uErr) {
+                        console.warn('Username uniqueness check failed:', uErr);
+                    }
                 }
 
                 // Create auth user with the real email
@@ -142,6 +172,7 @@ class SignupManager {
                 const updates = {};
                 updates[`users/${uid}`] = {
                     email: emailVal,
+                    username: usernameVal || null,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 };
 
@@ -170,6 +201,7 @@ class SignupManager {
                 // Local fallback stores email instead of username
                 localStorage.setItem('registeredEmail', email);
                 localStorage.setItem('registeredPassword', password);
+                if (this.usernameField) localStorage.setItem('registeredUsername', username);
                 this.showNotification('Account registered locally (offline). Redirecting to login...', 'success');
                 if (typeof window.pushNotification === 'function') window.pushNotification('Local account created — please log in', 'info', 2200);
                 const dot2 = document.querySelector('.notify-indicator .dot'); if (dot2) dot2.style.display = 'block';
