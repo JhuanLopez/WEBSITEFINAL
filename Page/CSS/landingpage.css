@@ -16,7 +16,15 @@ body {
     min-height: 100vh;
     position: relative;
 }
-
+.site-footer-note {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 10px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 8px 0;
+}
 /* Slight overlay to improve text contrast on top of the background image */
 body::before{
     content: '';

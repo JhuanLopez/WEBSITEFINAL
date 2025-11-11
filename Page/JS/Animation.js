@@ -26,6 +26,23 @@ btn.onclick = function () {
     sidebar.classList.toggle('active');
 };
 
+// Header hide-on-scroll: hide when scrolling down, show when scrolling up
+(function(){
+    let lastScroll = 0;
+    const header = document.querySelector('.site-header');
+    if(!header) return; // no header on some pages
+    window.addEventListener('scroll', () => {
+        const current = window.pageYOffset || document.documentElement.scrollTop;
+        // only toggle after a small threshold to avoid flicker
+        if (current > lastScroll && current > 80) {
+            header.classList.add('hidden');
+        } else {
+            header.classList.remove('hidden');
+        }
+        lastScroll = Math.max(0, current);
+    }, { passive: true });
+})();
+
 const fade = document.querySelectorAll('.Fade');
 window.addEventListener('scroll', checkFades);
 
@@ -35,11 +52,12 @@ function checkFades(){
     const triggerBottom = window.innerHeight / 5 * 4;
 
     fade.forEach((Fade) => {
-        const boxtop = box.getBoundingClientRect().top;
+        // guard: Fade elements may be different; use their own bounds
+        const boxtop = Fade.getBoundingClientRect().top;
         if (boxtop < triggerBottom){
-        box.classList.add('Fadein');
-        }else{
-            box.classList.remove('Fadein')
+            Fade.classList.add('Fadein');
+        } else {
+            Fade.classList.remove('Fadein');
         }
 
     })

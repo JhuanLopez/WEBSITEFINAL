@@ -2,24 +2,28 @@
     <head>
     <title>PERLAS Connect with Us</title>
         <meta charset="UTF-8">
+    <link rel="stylesheet" href="Page/CSS/maincontent.css">
     <link rel="stylesheet" href="Page/CSS/Connect.css">
     <link rel="stylesheet" href="Page/CSS/styles.css">
-        <link rel="stylesheet" href="Page/Icons/all.min.css">
-        <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
+    <link rel="stylesheet" href="Page/Icons/all.min.css">
+    <link rel="stylesheet" href="Page/Icons/fontawesome.min.css">
     <script defer src="Page/JS/Animation.js"></script>
     <script defer src="Page/JS/Connect.js"></script>
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     </head>
    <body>
-    <header class="top">
-    <a href="index.html" class="logo">PERLAS</a>
-        <nav class="nav">
-            <a href="index.html">Home</a>
-            <a href="lessonsHome.html">Lessons</a>
-            <a href="AboutUs.html">About</a>
-        </nav>
-    </header>
+            <header class="site-header">
+                <div class="header-inner">
+                    <a href="index.html" class="site-title">PERLAS: Angler's Journey</a>
+                    <nav class="header-nav" aria-label="Main navigation">
+                        <a href="lessonsHome.html">Store</a>
+                        <a href="Home.html">Home</a>
+                        <a href="Devs.html">Devs</a>
+                        <a href="Login.html" class="account-icon" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+                    </nav>
+                </div>
+            </header>
 <div class="main-content">
     <section id="home">
         <p class="page-title">Connect with Us</p>
@@ -29,9 +33,9 @@
   
         <form id="contactForm" class="Holder" novalidate>
             <!-- Add data attributes for EmailJS -->
-            <div class="Contact" style="display: flex; gap: 10px; align-items: flex-start;">
-                <input id="name" name="name" type="text" required placeholder="Name" style="flex:1; background: #006994; color: #fff; border: 1px solid #004d6d;">
-                <input id="email" name="email" type="email" required placeholder="Email" style="flex:1; background: #009dc4; color: #fff; border: 1px solid #007a99;">
+            <div class="Contact contact-row">
+                <input id="name" name="name" type="text" required placeholder="Name" class="contact-input name">
+                <input id="email" name="email" type="email" required placeholder="Email" class="contact-input email">
             </div>
 
             <div class="Contact">
@@ -97,35 +101,7 @@
         </form>
     </div>
     <div class="TF">
-<footer class="footer">
-    <div class="Cont">
-        <div class="row">
-            <div class="footer-col">
-                <h4>Home</h4>
-                <ul>
-                    <li><a href="AboutUs.html">about us</a></li>
-                    <li><a href="lessonsHome.html">Our Lessons</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>get help</h4>
-                <ul>
-                    <li><a href="Connect.html">Connect with us</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Services</h4>
-                <ul>
-                    <li><a href="Services.html">Services</a></li>
-                </ul>
-            </div>
-            <div class="Perlas"> 
-                <p>PERLAS</p><span>2024</span>
-            </div>
-        </div>
-    </div>
-</footer>
-<div style="text-align: center; font-weight: lighter; font-size: 10px; width: 100%; background-color: black; color: white;">All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1"</div>
+<div class="site-footer-note">All rights reserved. © 2024 Perlas IT Services. Designed and maintained by Lopez & Alipala_BSCS22M1</div>
 </div>
     <script>
     // Initialize EmailJS (replace with your user ID)

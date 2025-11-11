@@ -7,6 +7,67 @@
 }
 :root{ --hero-min-height: 60vh; }
 
+/* Hide native scrollbars across browsers but keep scrolling functional */
+html, body {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Base typography: increase default font size for better legibility */
+html { font-size: 18px; }
+body { font-size: 1rem; line-height: 1.6; -webkit-font-smoothing:antialiased; }
+
+/* Fluid heading sizes */
+h1 { font-size: clamp(28px, 4vw, 48px); line-height: 1.08; }
+h2 { font-size: clamp(22px, 3.2vw, 36px); line-height: 1.12; }
+h3 { font-size: clamp(18px, 2.6vw, 28px); line-height: 1.2; }
+
+/* Make interactive elements more touch-friendly */
+a, button { -webkit-tap-highlight-color: rgba(0,0,0,0.06); }
+button, .button { cursor: pointer; transition: transform 160ms ease, box-shadow 160ms ease; }
+button:focus, .button:focus, a:focus { outline: 3px solid rgba(0,119,166,0.15); outline-offset: 4px; }
+button:hover, .button:hover { transform: translateY(-2px); }
+button:active, .button:active { transform: translateY(0); }
+
+/* Make images responsive by default */
+img { max-width: 100%; height: auto; display: block; }
+
+/* Buttons and links - improved touch targets */
+.site-header .header-nav a, .top .nav a { padding: 10px 12px; min-height: 44px; display:inline-flex; align-items:center; }
+
+/* Smooth transitions for micro-interactions */
+.site-header .header-nav a, .top .nav a, .button, .gallery-item { transition: color 180ms ease, transform 180ms ease, opacity 180ms ease; }
+
+/* Gallery responsiveness improvements */
+.gallery-wrapper { width: 100%; }
+#gallery-image { width: 72vw !important; max-width: 1100px !important; height: auto !important; }
+#gallery-prev-img, #gallery-next-img { width: 16vw !important; max-width: 280px !important; height: auto !important; }
+
+/* Keyboard accessibility: visible focus ring for links */
+a:focus::after, .site-header .header-nav a:focus::after { transform: scaleX(1); }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    html { font-size: 16px; }
+    .site-header { padding: 0 18px; height: 64px; }
+    .site-header .site-title { font-size: 18px; }
+    .site-header .header-nav { gap: 18px; overflow-x: auto; }
+    /* hide scrollbar in supporting browsers */
+    .site-header .header-nav::-webkit-scrollbar { display: none; }
+    #gallery-image { width: 86vw !important; height: auto !important; }
+}
+
+@media (max-width: 600px) {
+    html { font-size: 15px; }
+    .site-header { padding: 0 12px; height: 56px; }
+    .site-header .header-nav { gap: 12px; }
+    .site-header .site-title { font-size: 16px; }
+    .gallery-image-row { gap: 4vw; }
+    #gallery-prev-img, #gallery-next-img { display: none !important; }
+    #gallery-image { width: 94vw !important; height: auto !important; }
+}
+
 @media (max-width: 768px){
     :root{ --hero-min-height: 45vh; }
 }
@@ -36,6 +97,151 @@
     padding: 0 20px;
     z-index: 999;
 }
+.site-header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    z-index: 999;
+    /* translucent background so page content can be seen underneath */
+    background: rgba(255,255,255,0.72);
+    box-shadow: none;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transition: transform 280ms cubic-bezier(.2,.9,.3,1), background 200ms ease, opacity 200ms ease;
+}
+.site-header .site-title{
+    font-weight: 700;
+    color: #111111;
+    text-decoration: none;
+    letter-spacing: 0.6px;
+    font-size: 50px; /* match reference */
+}
+.site-header .header-inner{ display:flex; align-items:center; width:100%; }
+.site-header .header-nav{
+    margin-left: auto;
+    display: flex;
+    gap: 28px; /* spacing between links */
+    align-items: center;
+    flex-wrap: nowrap; /* prevent links from wrapping to next line */
+    white-space: nowrap;
+}
+.site-header .header-nav a{
+    color: #111111;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 25px;
+}
+.site-header .header-nav a{ display:inline-block; padding:6px 8px; }
+
+/* Animated underline on hover/focus for header links */
+.site-header .header-nav a {
+    position: relative;
+}
+.site-header .header-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    bottom: -8px;
+    background: #0077a8;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 260ms cubic-bezier(.2,.9,.3,1);
+    will-change: transform;
+}
+.site-header .header-nav a:hover::after,
+.site-header .header-nav a:focus::after,
+.site-header .header-nav a:active::after {
+    transform: scaleX(1);
+}
+
+/* Apply same underline behavior to .top nav for pages using older header markup */
+.top .nav a { position: relative; }
+.top .nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    bottom: -8px;
+    background: #0077a8;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 260ms cubic-bezier(.2,.9,.3,1);
+}
+.top .nav a:hover::after, .top .nav a:focus::after { transform: scaleX(1); }
+.site-header .header-nav a:hover{ color: #0077a8; }
+.site-header .account-icon{ margin-left: 6px; }
+.site-header .account-icon i{ font-size: 18px; color: #111111; }
+/* Account menu (header) */
+.account-menu { position: relative; margin-left: 6px; }
+.account-button { background: transparent; border: none; padding: 6px 8px; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; cursor: pointer; }
+.account-button i { font-size: 18px; color: #111111; }
+.account-button:focus { outline: 3px solid rgba(0,119,166,0.15); outline-offset: 3px; }
+.account-panel { position: absolute; right: 0; top: calc(100% + 8px); min-width: 220px; background: rgba(255,255,255,0.98); box-shadow: 0 10px 30px rgba(0,0,0,0.18); border-radius: 10px; padding: 8px; display: none; z-index: 1100; }
+.account-panel.open, .account-panel[aria-hidden="false"] { display: block; animation: fadeIn .18s ease both; }
+.account-panel__user { font-weight: 600; padding: 8px 12px; color: #000000; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 8px; }
+.account-panel__actions { display:flex; flex-direction: column; gap: 8px; padding: 6px 2px; }
+.account-action { background: transparent; border: 1px solid rgba(0,0,0,0.06); padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; cursor: pointer; text-align: left; }
+.account-action:hover { background: rgba(0,119,166,0.04); transform: translateY(-1px); }
+.account-action.danger { background: linear-gradient(180deg,#ffefef,#ffd6d6); border-color: rgba(255,80,80,0.2); color: #9b1c1c; }
+.visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; border: 0; padding: 0; margin: -1px; }
+/* Hidden state (used by JS when scrolling down) */
+.site-header.hidden{
+    transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
+}
+ 
+/* Support existing pages that use <header class="top"> by matching .top to site-header styles */
+.top { position: fixed; top: 0; left: 0; right: 0; height: 72px; display:flex; align-items:center; padding:0 36px; background:#ffffff; z-index:999; }
+.top .logo { font-weight:700; color:#111111; text-decoration:none; font-size:20px; }
+.top .nav { margin-left:auto; display:flex; gap:28px; align-items:center; flex-wrap:nowrap; white-space:nowrap; }
+.top .nav a{ color:#111111; text-decoration:none; font-weight:500; font-size:16px; display:inline-block; padding:6px 8px; }
+
+/* Helpers to replace inline styles used across pages */
+.no-decoration { text-decoration: none; }
+.site-footer-note {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 10px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 8px 0;
+}
+
+.gallery-section { width:100%; display:flex; flex-direction:column; align-items:center; margin: 0; padding: 0; min-height: 500px; background-image: url("../images/5.png"); background-size: cover; background-position: center center; background-repeat: no-repeat; }
+.gallery-wrapper { max-width:900px; width:100%; position:relative; }
+.gallery-image-row { display:flex; align-items:center; justify-content:center; gap:2vw; width:100%; background:none; box-shadow:none; }
+#gallery-prev-img, #gallery-next-img { width:22vw; max-width:320px; height:44vh; object-fit:contain; opacity:0.5; filter:blur(1px); border-radius:0; box-shadow:none; transition:opacity .5s, filter .5s; cursor:pointer; background:none; }
+#gallery-image { width:54vw; max-width:900px; height:88vh; min-width:320px; object-fit:contain; border-radius:0; box-shadow:none; transition:opacity .5s; background:none; }
+.gallery-desc { margin-top:6px; text-align:center; min-height:34px; font-size:1.1rem; color:#023047; transition:opacity .5s; }
+.gallery-indicators { display:flex; justify-content:center; gap:12px; margin-top:18px; }
+
+/* Card back default padding used in multiple places */
+.card-back p { padding: 40px; }
+.card-back p.small { padding: 20px; }
+
+/* Input container helpers (toggle password icon and positioning) */
+.input-container { position: relative; }
+.toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; }
+
+/* Loading spinner hidden by default (remove inline style) */
+.loading-spinner { display: none; }
+
+/* Contact form helpers */
+.contact-row { display: flex; gap: 10px; align-items: flex-start; }
+.contact-input { flex: 1; color: #fff; border: 1px solid transparent; padding: 10px; border-radius: 6px; }
+.contact-input.name { background: #006994; border-color: #004d6d; }
+.contact-input.email { background: #009dc4; border-color: #007a99; }
+
 .sidebar .top{
     display: flex;
     align-items: center;
@@ -138,14 +344,19 @@ background-color: rgb(164, 168, 165);
 }
 .main-content{
     position: relative;
-    min-height: 100vh;
-    top: 0;
+    /* Full-width content, no external margins; keep header spacing */
     left: 0;
+    margin: 0;
+    padding-top: 92px; /* keep room for the top header */
     transition: all 0.5s ease;
     width: 100%;
-    padding-top: 84px; /* make room for the top header */
-    background-image: url(templates/main.png);
-    background-size: contain;
+    /* Ensure a taller area as requested */
+    min-height: 500px;
+     /* background image changed to Page/images/4.png as requested
+        Use a path relative to this CSS file (../images/4.png) so it resolves correctly. */
+     background-image: url("../images/4.png");
+    background-size: cover;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 .Topper h1{
@@ -180,7 +391,7 @@ background-color: rgb(164, 168, 165);
 .buth{
     display:flex;
     justify-content:center;
-    margin: 0 0 50px 0;
+    
 }
 .btn.signup, .but {
     display: inline-block;
@@ -322,6 +533,7 @@ ul{
   
     .benefit {
         position: relative;
+        color: white;
         /* scale using clamp: min 240px, preferred 28vw, max 420px */
         width: clamp(240px, 28vw, 420px);
         height: clamp(180px, 20vw, 340px);
@@ -340,7 +552,7 @@ ul{
   
     .card-front {
         text-align: center;
-        color: white;
+        color: rgb(255, 255, 255);
         background-color: #111;
         padding: clamp(18px, 2.4vw, 36px);
         border-radius: 12px;
@@ -420,7 +632,6 @@ ul{
     overflow-x: auto; /* allow programmatic scrolling */
     padding: 12px 0;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
     width: 100%;
     touch-action: pan-x; /* prioritize horizontal dragging */
     cursor: grab;
@@ -456,7 +667,11 @@ ul{
 /* Arrow buttons removed — gallery is draggable only */
 
 /* hide native scrollbar globally for gallery-track for all browsers */
-.gallery-track{ scrollbar-width: none; -ms-overflow-style: none; }
+.gallery-track{ -ms-overflow-style: none; }
+/* scrollbar-width is a progressive enhancement; only add when supported */
+@supports (scrollbar-width: none) {
+    .gallery-track { scrollbar-width: none; }
+}
 .gallery-track::-webkit-scrollbar{ display: none; }
 
 .gallery-item img{ width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -465,7 +680,7 @@ ul{
 .gallery-track.grabbing { cursor: grabbing; }
 
 /* Tighter spacing and larger gallery images overrides */
-.gallery-section { margin: 12px 0 !important; }
+.gallery-section { margin: 0 !important; min-height: 500px !important; background-image: url("../images/5.png") !important; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; }
 .gallery-section h2 { margin-bottom: 10px !important; }
 .gallery-wrapper { max-width: 1200px; }
 .gallery-image-row { gap: 1.6vw !important; }
@@ -641,11 +856,21 @@ ul{
 }
 .main-content2{
     position: relative;
-    min-height: 70vh;
+    /* Removed left offset and margins so content spans full width */
+    left: 0;
+    margin: 0;
+    padding: 0;
+    /* Ensure a taller area as requested */
+    min-height: 700px;
     top: 0;
-    left: 80px;
     transition: all 0.5s ease;
-    width: calc(100% - 80px); 
+    width: 100%;
+    /* background image for main-content2 */
+    background-image: url("../images/3.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* fallback background color if image missing */
     background-color: #838080;
 }
 .container3 p{
@@ -664,16 +889,34 @@ ul{
 .main-content3{
     padding-bottom: 40px;
     position: relative;
-    min-height: 40vh;
-    top: 0;
-    left: 80px;
+    /* remove left offset and ensure full-width layout */
+    left: 0;
+    margin: 0;
+    padding: 0 0 40px 0;
     transition: all 0.5s ease;
-    width: calc(100% - 80px); 
-    background-color: #ffffff;
+    width: 100%;
+    min-height: 500px;
+    /* Use Page/images/2.png as background for this section */
+    background-image: url("../images/2.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #ffffff; /* fallback */
 }
 .sidebar.active ~ .main-content3{
     left: 250px;
     width: calc(100% - 250px);
+}
+
+/* Ensure main content sections do not shift when sidebar is toggled.
+   Force full-width so background cover fills the viewport with no left gap. */
+.sidebar.active ~ .main-content,
+.sidebar.active ~ .main-content2,
+.sidebar.active ~ .main-content3,
+.sidebar.active ~ .footer {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
 }
 
 /* ----- Home page responsive overrides (appended) ----- */
@@ -703,7 +946,7 @@ ul{
     .container2 .page-title { font-size: clamp(1.6rem, 9vw, 2.6rem); letter-spacing: 4px; }
     .Perlas p { font-size: clamp(1.2rem, 9vw, 2.2rem); }
     .container3 p { font-size: clamp(0.95rem, 4.6vw, 1.4rem); padding-top: 14px; }
-    .buth { margin-bottom: 12px !important; }
+    
     .gallery-section { margin: 8px 0 !important; }
     #gallery-image { width: 94vw !important; height: auto !important; }
 }
